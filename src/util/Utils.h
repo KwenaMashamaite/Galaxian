@@ -22,28 +22,17 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GALAXIAN_MAINMENUSCENE_H
-#define GALAXIAN_MAINMENUSCENE_H
+#ifndef GALAXIAN_UTILS_H
+#define GALAXIAN_UTILS_H
 
-#include "Scene.h"
+#include <string>
 
-/**
- * @brief Main menu scene
- */
-class MainMenuScene : public Scene {
-public:
+namespace util {
     /**
-     * @brief Default Constructor
+     * @brief Get today's date
+     * @return Today's date in the format: day month year
      */
-    MainMenuScene();
+    extern std::string getDate();
+}
 
-    /**
-     * @brief Enter the main menu scene
-     *
-     * This function is called once by IME when the scene is entered for
-       the first time
-     */
-    void onEnter() override;
-};
-
-#endif //GALAXIAN_MAINMENUGUI_H
+#endif //GALAXIAN_UTILS_H

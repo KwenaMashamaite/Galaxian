@@ -21,7 +21,7 @@ set(SRC_FILES
         scene/PauseMenuScene.cpp
         scene/GameOverScene.cpp
         scene/GameplayScene.cpp
-        )
+        util/Utils.cpp)
 
 # Resource script files
 set(RES_FILES

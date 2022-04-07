@@ -22,28 +22,34 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GALAXIAN_MAINMENUSCENE_H
-#define GALAXIAN_MAINMENUSCENE_H
+#include "Utils.h"
+#include <ctime>
 
-#include "Scene.h"
+///////////////////////////////////////////////////////////////
+std::string convertToMonth(int month) {
+    switch (month) {
+        case 1:     return "January";
+        case 2:     return "February";
+        case 3:     return "March";
+        case 4:     return "April";
+        case 5:     return "May";
+        case 6:     return "June";
+        case 7:     return "July";
+        case 8:     return "August";
+        case 9:     return "September";
+        case 10:    return "October";
+        case 11:    return "November";
+        case 12:    return "December";
+        default:
+            return "Invalid";
+    }
+}
 
-/**
- * @brief Main menu scene
- */
-class MainMenuScene : public Scene {
-public:
-    /**
-     * @brief Default Constructor
-     */
-    MainMenuScene();
-
-    /**
-     * @brief Enter the main menu scene
-     *
-     * This function is called once by IME when the scene is entered for
-       the first time
-     */
-    void onEnter() override;
-};
-
-#endif //GALAXIAN_MAINMENUGUI_H
+namespace util {
+    ///////////////////////////////////////////////////////////////
+    std::string getDate() {
+        std::time_t t = std::time(nullptr);
+        std::tm* now = std::localtime(&t);
+        return std::to_string(now->tm_mday) + " " + convertToMonth(now->tm_mon + 1) + " " + std::to_string(now->tm_year + 1900);
+    }
+}

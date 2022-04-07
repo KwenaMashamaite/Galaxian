@@ -22,28 +22,24 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GALAXIAN_MAINMENUSCENE_H
-#define GALAXIAN_MAINMENUSCENE_H
+#ifndef GALAXIAN_CONFIG_H
+#define GALAXIAN_CONFIG_H
 
-#include "Scene.h"
+#include <string>
+#include "IME/Config.h"
 
-/**
- * @brief Main menu scene
- */
-class MainMenuScene : public Scene {
-public:
+namespace config {
     /**
-     * @brief Default Constructor
+     * @brief The current version of the game
      */
-    MainMenuScene();
+    static inline const std::string VERSION = "0.1.0";
 
     /**
-     * @brief Enter the main menu scene
-     *
-     * This function is called once by IME when the scene is entered for
-       the first time
+     * @brief The version of IME used to build the game
      */
-    void onEnter() override;
-};
+    static inline const std::string IME_VERSION = std::to_string(IME_VERSION_MAJOR) + "."
+            + std::to_string(IME_VERSION_MINOR) + "."
+            + std::to_string(IME_VERSION_PATCH);
+}
 
-#endif //GALAXIAN_MAINMENUGUI_H
+#endif //GALAXIAN_CONFIG_H

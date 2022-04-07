@@ -24,8 +24,63 @@
 
 #include "MainMenuScene.h"
 #include "gui/MainMenuGui.h"
+#include "GameplayScene.h"
+#include <IME/core/engine/Engine.h>
+#include <IME/ui/widgets/Panel.h>
 
 ///////////////////////////////////////////////////////////////
 MainMenuScene::MainMenuScene() {
     m_view = std::make_unique<gui::MainMenuGui>();
+}
+
+void MainMenuScene::onEnter() {
+    /*-- Main menu event handlers  --*/
+
+    ime::ui::GuiContainer& gui = getGui();
+
+    // Play button handler
+    gui.getWidget("btnPlay")->on("click", ime::Callback<>([this] {
+        getEngine().popScene();
+        getEngine().pushScene(std::make_unique<GameplayScene>());
+    }));
+
+    // Options button handler
+    gui.getWidget("btnOptions")->on("click", ime::Callback<>([&gui] {
+
+    }));
+
+    // High score button handler
+    gui.getWidget("btnHighScores")->on("click", ime::Callback<>([&gui] {
+        gui.getWidget("pnlRibbon")->setVisible(false);
+        gui.getWidget("pnlHighScores")->setVisible(true);
+        gui.getWidget<ime::ui::Panel>("pnlMain")->getRenderer()->setBackgroundTexture("sub-main-menu-background.jpg");
+    }));
+
+    // About button handler
+    gui.getWidget("btnAbout")->on("click", ime::Callback<>([&gui] {
+        gui.getWidget("pnlRibbon")->setVisible(false);
+        gui.getWidget("pnlAbout")->setVisible(true);
+        gui.getWidget<ime::ui::Panel>("pnlMain")->getRenderer()->setBackgroundTexture("sub-main-menu-background.jpg");
+    }));
+
+    // Exit button handler
+    gui.getWidget("btnExit")->on("click", ime::Callback<>([this] {
+        getEngine().quit();
+    }));
+
+    /*** Sub menu event handlers **/
+
+    // About panel close button handler
+    gui.getWidget("btnCloseAboutPanel")->on("click", ime::Callback<>([&gui] {
+        gui.getWidget("pnlAbout")->setVisible(false);
+        gui.getWidget("pnlRibbon")->setVisible(true);
+        gui.getWidget<ime::ui::Panel>("pnlMain")->getRenderer()->setBackgroundTexture("main-menu-background.jpg");
+    }));
+
+    // High scores close button handler
+    gui.getWidget("btnCloseScoresPanel")->on("click", ime::Callback<>([&gui] {
+        gui.getWidget("pnlHighScores")->setVisible(false);
+        gui.getWidget("pnlRibbon")->setVisible(true);
+        gui.getWidget<ime::ui::Panel>("pnlMain")->getRenderer()->setBackgroundTexture("main-menu-background.jpg");
+    }));
 }
