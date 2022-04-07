@@ -22,24 +22,19 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "Emissary.h"
+#ifndef GALAXIAN_IPOINTSAWARDER_H
+#define GALAXIAN_IPOINTSAWARDER_H
 
-///////////////////////////////////////////////////////////////
-Emissary::Emissary(ime::Scene &scene) :
-    Galaxian(scene, Galaxian::Type::Emissary)
-{
+/**
+ * @brief Interface for actors that awards the player with points when shot down
+ */
+class IPointsAwarder {
+public:
+    /**
+     * @brief Get the points to be awarded to the player
+     * @return The points to be awarded to the player
+     */
+    virtual int getPoints() const = 0;
+};
 
-}
-
-///////////////////////////////////////////////////////////////
-int Emissary::getPoints() const {
-    if (m_isInFormation)
-        return 40;
-    else
-        return 80;
-}
-
-///////////////////////////////////////////////////////////////
-std::string Emissary::getClassName() const {
-    return "Emissary";
-}
+#endif //GALAXIAN_IPOINTSAWARDER_H

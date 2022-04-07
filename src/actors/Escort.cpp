@@ -61,6 +61,14 @@ const Flagship *Escort::flagship() const {
 }
 
 ///////////////////////////////////////////////////////////////
+int Escort::getPoints() const {
+    if (m_isInFormation)
+        return 50;
+    else
+        return 100;
+}
+
+///////////////////////////////////////////////////////////////
 std::string Escort::getClassName() const {
     return "Escort";
 }

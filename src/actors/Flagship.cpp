@@ -26,10 +26,12 @@
 #include "Escort.h"
 
 #include <cassert>
+#include <iostream>
 
 ///////////////////////////////////////////////////////////////
 Flagship::Flagship(ime::Scene &scene) :
-    Galaxian(scene, Galaxian::Type::Flagship)
+    Galaxian(scene, Galaxian::Type::Flagship),
+    m_hadEscorts(false)
 {
 
 }
@@ -39,6 +41,7 @@ bool Flagship::addEscort(Escort *escort) {
     assert(escort);
 
     if (isInFormation() && getEscortCount() < getMaxNumEscorts()) {
+        m_hadEscorts = true;
         m_escorts.push_back(escort);
         escort->setFlagship(this);
         escort->onDestruction([escort, this] { removeEscort(escort); });
@@ -83,8 +86,36 @@ bool Flagship::isEscorted() const {
 }
 
 ///////////////////////////////////////////////////////////////
+bool Flagship::hadEscorts() const {
+    return m_hadEscorts;
+}
+
+
+///////////////////////////////////////////////////////////////
 unsigned int Flagship::getMaxNumEscorts() {
     return 2;
+}
+
+///////////////////////////////////////////////////////////////
+int Flagship::getPoints() const {
+    if (m_isInFormation)
+        return 60;
+    else {
+        switch (getEscortCount()) {
+            case 0:
+                if (m_hadEscorts)   // Both escorts destroyed before the flagship
+                    return 800;
+                else
+                    return 150;     // Flagship attacked alone
+            case 1:
+                return 200;
+            case 2:
+                return 300;
+            default:
+                std::cerr << "Error: Flagship has more that two escorts" << "\n";
+                exit(-1);
+        }
+    }
 }
 
 ///////////////////////////////////////////////////////////////

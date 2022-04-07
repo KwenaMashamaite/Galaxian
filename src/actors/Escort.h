@@ -50,6 +50,12 @@ public:
     const Flagship* flagship() const;
 
     /**
+     * @brief Get the points awarded to the player when an escort is shot down
+     * @return Points the player scored by shooting down the escort ship
+     */
+    int getPoints() const override;
+
+    /**
      * @brief Get the name of the class
      * @return The name of the class as declared
      */

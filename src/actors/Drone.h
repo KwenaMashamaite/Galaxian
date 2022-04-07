@@ -39,6 +39,12 @@ public:
     explicit Drone(ime::Scene& scene);
 
     /**
+     * @brief Get the points awarded to the player when a drown is shot down
+     * @return Points the player scored by shooting down the drone
+     */
+    int getPoints() const override;
+
+    /**
      * @brief Get the name of the class
      * @return The name of the class as declared
      */

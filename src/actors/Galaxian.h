@@ -25,12 +25,13 @@
 #ifndef GALAXIAN_GALAXIAN_H
 #define GALAXIAN_GALAXIAN_H
 
+#include "IPointsAwarder.h"
 #include "AttackShip.h"
 
 /**
  * @brief A base class for all enemy ships
  */
-class Galaxian : public AttackShip {
+class Galaxian : public AttackShip, public IPointsAwarder {
 public:
     /**
      * @brief The type of galaxian

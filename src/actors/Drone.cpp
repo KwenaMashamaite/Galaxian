@@ -32,6 +32,14 @@ Drone::Drone(ime::Scene &scene) :
 }
 
 ///////////////////////////////////////////////////////////////
+int Drone::getPoints() const {
+    if (m_isInFormation)
+        return 30;
+    else
+        return 60;
+}
+
+///////////////////////////////////////////////////////////////
 std::string Drone::getClassName() const {
     return "Drone";
 }

@@ -53,6 +53,8 @@ public:
      *
      * @warning @a escort must not be a @a nullptr
      *
+     * By default, the flagship does not have any escorts
+     *
      * @see removeEscort
      */
     bool addEscort(Escort* escort);
@@ -92,14 +94,37 @@ public:
     /**
      * @brief Check if the flagship is currently being escorted or not
      * @return True if escorted, false otherwise
+     *
+     * A flagship is escorted if it currently has at least one Escort ship
+     * with it.
+     *
+     * @see hadEscorts, addEscort
      */
     bool isEscorted() const;
+
+    /**
+     * @brief Check if the flagship was previously escorted
+     * @return True if the flagship was previously escorted, false otherwise
+     *
+     * Unlike isEscorted(), this function checks if the flagship left the
+     * formation with an escort. It does not take into account whether the
+     * escort is still alive or not
+     *
+     * @see isEscorted, addEscort
+     */
+    bool hadEscorts() const;
 
     /**
      * @brief Get the maximum number of escorts a flagship is allowed
      * @return The maximum number of escorts a flagship can have
      */
     static unsigned int getMaxNumEscorts();
+
+    /**
+     * @brief Get the points awarded to the player when a flagship is shot down
+     * @return Points the player scored by shooting down the flagship
+     */
+    int getPoints() const override;
 
     /**
      * @brief Get the name of the class
@@ -109,6 +134,7 @@ public:
 
 private:
     std::vector<Escort*> m_escorts; //!< Escorts
+    bool m_hadEscorts;              //!< A flag indicating whether or not the flagship left the formation with an escort
 };
 
 #endif //GALAXIAN_FLAGSHIP_H
