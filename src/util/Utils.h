@@ -26,6 +26,7 @@
 #define GALAXIAN_UTILS_H
 
 #include <string>
+#include <IME/ui/widgets/Button.h>
 
 namespace util {
     /**
@@ -33,6 +34,14 @@ namespace util {
      * @return Today's date in the format: day month year
      */
     extern std::string getDate();
+
+    /**
+     * @brief Create a primary button
+     * @param name The name of the button
+     * @param text The text of the button
+     * @return The created button
+     */
+    ime::ui::Button::Ptr createButton(const std::string& name, const std::string& text);
 }
 
 #endif //GALAXIAN_UTILS_H

@@ -36,6 +36,14 @@ public:
      * @brief Default constructor
      */
     GameplayScene();
+
+    /**
+     * @brief Enter the gameplay scene
+     *
+     * This function is called once by IME when the scene is entered for the
+     * first time
+     */
+    void onEnter() override;
 };
 
 #endif //GALAXIAN_GAMEPLAYSCENE_H

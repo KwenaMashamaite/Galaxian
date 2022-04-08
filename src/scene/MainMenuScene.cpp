@@ -27,19 +27,31 @@
 #include "GameplayScene.h"
 #include <IME/core/engine/Engine.h>
 #include <IME/ui/widgets/Panel.h>
+#include <IME/ui/widgets/Button.h>
 
 ///////////////////////////////////////////////////////////////
 MainMenuScene::MainMenuScene() {
     m_view = std::make_unique<gui::MainMenuGui>();
 }
 
+///////////////////////////////////////////////////////////////
 void MainMenuScene::onEnter() {
     /*-- Main menu event handlers  --*/
 
     ime::ui::GuiContainer& gui = getGui();
 
+    // On boot up, the game is cannot be resumed
+    gui.getWidget("btnResume")->setVisible(false);
+
+    // Resume button handler
+    gui.getWidget("btnResume")->on("click", ime::Callback<>([this] {
+        getEngine().popScene();
+        getEngine().pushCachedScene("GameplayScene");
+    }));
+
     // Play button handler
     gui.getWidget("btnPlay")->on("click", ime::Callback<>([this] {
+        getEngine().uncacheScene("GameplayScene");
         getEngine().popScene();
         getEngine().pushScene(std::make_unique<GameplayScene>());
     }));
@@ -83,4 +95,18 @@ void MainMenuScene::onEnter() {
         gui.getWidget("pnlRibbon")->setVisible(true);
         gui.getWidget<ime::ui::Panel>("pnlMain")->getRenderer()->setBackgroundTexture("main-menu-background.jpg");
     }));
+}
+
+///////////////////////////////////////////////////////////////
+void MainMenuScene::onResumeFromCache() {
+    if (getEngine().isSceneCached("GameplayScene")) {
+        getGui().getWidget("btnResume")->setVisible(true);
+        getGui().getWidget<ime::ui::Button>("btnPlay")->setText("New Game");
+    }
+}
+
+///////////////////////////////////////////////////////////////
+void MainMenuScene::onExit() {
+    getGui().getWidget("btnResume")->setVisible(false);
+    getGui().getWidget<ime::ui::Button>("btnPlay")->setText("Play");
 }

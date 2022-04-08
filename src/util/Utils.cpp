@@ -52,4 +52,27 @@ namespace util {
         std::tm* now = std::localtime(&t);
         return std::to_string(now->tm_mday) + " " + convertToMonth(now->tm_mon + 1) + " " + std::to_string(now->tm_year + 1900);
     }
+
+    ///////////////////////////////////////////////////////////////
+    ime::ui::Button::Ptr createButton(const std::string& name, const std::string& text) {
+        auto btn = ime::ui::Button::create(text);
+        btn->setName(name);
+        btn->setTextSize(14.0f);
+
+        ime::ui::ButtonRenderer* renderer = btn->getRenderer();
+        renderer->setRoundedBorderRadius(20);
+        renderer->setHoverTextStyle(ime::TextStyle::Italic);
+        renderer->setBackgroundColour(ime::Colour::Transparent);
+        renderer->setBackgroundHoverColour(ime::Colour::Transparent);
+        renderer->setBackgroundColourDown(ime::Colour::Transparent);
+        renderer->setTextColour(ime::Colour("#808080"));
+        renderer->setTextHoverColour(ime::Colour::White);
+        renderer->setBorderColour(ime::Colour::Transparent);
+        renderer->setFocusedBorderColour(ime::Colour::Transparent);
+        renderer->setBorderHoverColour(ime::Colour::Transparent);
+        renderer->setFocusedBorderColour(ime::Colour::Transparent);
+        renderer->setBorderColourOnMouseDown(ime::Colour::Transparent);
+
+        return btn;
+    }
 }

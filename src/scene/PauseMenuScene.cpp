@@ -24,8 +24,34 @@
 
 #include "PauseMenuScene.h"
 #include "gui/PauseMenuGui.h"
+#include <IME/core/engine/Engine.h>
 
 ///////////////////////////////////////////////////////////////
 PauseMenuScene::PauseMenuScene() {
     m_view = std::make_unique<gui::PauseMenuGui>();
+}
+
+///////////////////////////////////////////////////////////////
+void PauseMenuScene::onEnter() {
+    // Resume button handler
+    getGui().getWidget("btnResume")->on("click", ime::Callback<>([this] {
+        getEngine().popScene();
+    }));
+
+    // Main menu button handler
+    getGui().getWidget("btnMainMenu")->on("click", ime::Callback<>([this] {
+        getEngine().removeAllScenes();
+        getEngine().pushCachedScene("MainMenuScene");
+    }));
+
+    // Exit game button handler
+    getGui().getWidget("btnExit")->on("click", ime::Callback<>([this] {
+        getEngine().quit();
+    }));
+
+    // Keyboard input handler
+    getInput().onKeyUp([this](ime::Keyboard::Key key) {
+        if (key == ime::Keyboard::Key::Escape || key == ime::Keyboard::Key::P)
+            getEngine().popScene();
+    });
 }

@@ -36,6 +36,14 @@ public:
      * @brief Default constructor
      */
     PauseMenuScene();
+
+    /**
+     * @brief Enter the main menu scene
+     *
+     * This function is called once by IME when the scene is entered for
+       the first time
+     */
+    void onEnter() override;
 };
 
 

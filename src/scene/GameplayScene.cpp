@@ -23,9 +23,28 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "GameplayScene.h"
+#include "PauseMenuScene.h"
 #include "gui/GameplayGui.h"
+#include <IME/core/engine/Engine.h>
 
 ///////////////////////////////////////////////////////////////
 GameplayScene::GameplayScene() {
     m_view = std::make_unique<gui::GameplayGui>();
+}
+
+void GameplayScene::onEnter() {
+    setCached(true, "GameplayScene");
+
+    // Pause game
+    getEngine().cacheScene("PauseMenuScene", std::make_unique<PauseMenuScene>());
+
+    auto pauseGame = [this] { getEngine().pushCachedScene("PauseMenuScene"); };
+
+    int handler = getWindow().onClose(pauseGame);
+    onDestruction([handler, this] {
+        getWindow().removeEventListener(handler);
+    });
+
+    getInput().bindKey(ime::Keyboard::Key::P, ime::input::KeyBindType::KeyUp, pauseGame);
+    getInput().bindKey(ime::Keyboard::Key::Escape, ime::input::KeyBindType::KeyUp, pauseGame);
 }

@@ -23,10 +23,45 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "PauseMenuGui.h"
+#include "util/Utils.h"
+#include <IME/ui/widgets/Panel.h>
+#include <IME/ui/widgets/Label.h>
+#include <IME/ui/widgets/Button.h>
+#include <IME/ui/widgets/VerticalLayout.h>
 
 namespace gui {
     ///////////////////////////////////////////////////////////////
     void PauseMenuGui::init(ime::ui::GuiContainer& guiContainer) {
+        // Prent container
+        auto pnlContainer = ime::ui::Panel::create("80%", "80%");
+        pnlContainer->setName("pnlContainer");
+        pnlContainer->setOrigin(0.5f, 0.5f);
+        pnlContainer->setPosition("50%", "50%");
+        pnlContainer->getRenderer()->setBackgroundColour(ime::Colour("#0c0c0cE8"));
+        pnlContainer->getRenderer()->setRoundedBorderRadius(8.0f);
 
+        // Paused label
+        auto lblHeading = ime::ui::Label::create("GAME PAUSED");
+        lblHeading->getRenderer()->setFont("ChaletLondonNineteenSixty.ttf");
+        lblHeading->getRenderer()->setTextStyle(ime::TextStyle::Bold);
+        lblHeading->getRenderer()->setTextColour(ime::Colour::Red);
+        lblHeading->setOrigin(0.5f, 0.0f);
+        lblHeading->setPosition("50%", "4%");
+        lblHeading->setTextSize(40.0f);
+        pnlContainer->addWidget(std::move(lblHeading));
+
+        // Buttons container
+        auto vlButtonsContainer = ime::ui::VerticalLayout::create("70%", "28%");
+        vlButtonsContainer->setOrigin(0.5f, 0.5f);
+        vlButtonsContainer->setPosition("50%", "50%");
+        vlButtonsContainer->getRenderer()->setSpaceBetweenWidgets(12.0f);
+
+        // Buttons
+        vlButtonsContainer->addWidget(util::createButton("btnResume", "Resume"));
+        vlButtonsContainer->addWidget(util::createButton("btnMainMenu", "Main Menu"));
+        vlButtonsContainer->addWidget(util::createButton("btnExit", "Exit Game"));
+        pnlContainer->addWidget(std::move(vlButtonsContainer));
+
+        guiContainer.addWidget(std::move(pnlContainer));
     }
 }

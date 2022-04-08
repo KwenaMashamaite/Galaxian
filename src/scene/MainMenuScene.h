@@ -44,6 +44,16 @@ public:
        the first time
      */
     void onEnter() override;
+
+    /**
+     * @brief
+     */
+    void onResumeFromCache() override;
+
+    /**
+     * @brief
+     */
+    void onExit() override;
 };
 
 #endif //GALAXIAN_MAINMENUGUI_H

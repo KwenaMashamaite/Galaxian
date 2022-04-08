@@ -61,29 +61,6 @@ namespace gui {
     }
 
     ///////////////////////////////////////////////////////////////
-    ime::ui::Button::Ptr createButton(const std::string& name, const std::string& text) {
-        auto btn = ime::ui::Button::create(text);
-        btn->setName(name);
-        btn->setTextSize(14.0f);
-
-        ime::ui::ButtonRenderer* renderer = btn->getRenderer();
-        renderer->setRoundedBorderRadius(20);
-        renderer->setHoverTextStyle(ime::TextStyle::Italic);
-        renderer->setBackgroundColour(ime::Colour::Transparent);
-        renderer->setBackgroundHoverColour(ime::Colour::Transparent);
-        renderer->setBackgroundColourDown(ime::Colour::Transparent);
-        renderer->setTextColour(ime::Colour("#808080"));
-        renderer->setTextHoverColour(ime::Colour::White);
-        renderer->setBorderColour(ime::Colour::Transparent);
-        renderer->setFocusedBorderColour(ime::Colour::Transparent);
-        renderer->setBorderHoverColour(ime::Colour::Transparent);
-        renderer->setFocusedBorderColour(ime::Colour::Transparent);
-        renderer->setBorderColourOnMouseDown(ime::Colour::Transparent);
-
-        return btn;
-    }
-
-    ///////////////////////////////////////////////////////////////
     ime::ui::VerticalLayout::Ptr createList(const std::string& heading, ime::Colour headingColour, const std::string& placeholder) {
         auto vlColumn = ime::ui::VerticalLayout::create();
         vlColumn->getRenderer()->setSpaceBetweenWidgets(5);
@@ -144,11 +121,12 @@ namespace gui {
         vlButtonsContainer->getRenderer()->setSpaceBetweenWidgets(12.0f);
 
         // Buttons
-        vlButtonsContainer->addWidget(createButton("btnPlay", "Start"));
-        vlButtonsContainer->addWidget(createButton("btnOptions", "Options"));
-        vlButtonsContainer->addWidget(createButton("btnHighScores", "High Scores"));
-        vlButtonsContainer->addWidget(createButton("btnAbout", "About"));
-        vlButtonsContainer->addWidget(createButton("btnExit", "Quit"));
+        vlButtonsContainer->addWidget(util::createButton("btnResume", "Resume"));
+        vlButtonsContainer->addWidget(util::createButton("btnPlay", "Start"));
+        vlButtonsContainer->addWidget(util::createButton("btnOptions", "Options"));
+        vlButtonsContainer->addWidget(util::createButton("btnHighScores", "High Scores"));
+        vlButtonsContainer->addWidget(util::createButton("btnAbout", "About"));
+        vlButtonsContainer->addWidget(util::createButton("btnExit", "Quit"));
         pnlRibbon->addWidget(std::move(vlButtonsContainer));
 
         // Game version
