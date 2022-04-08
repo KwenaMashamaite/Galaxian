@@ -23,7 +23,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "GameEngine.h"
-#include "scene/MainMenuScene.h"
+#include "scene/LoadScreenScene.h"
 
 ///////////////////////////////////////////////////////////////
 ime::PrefContainer getEngineSettings() {
@@ -47,7 +47,10 @@ ime::PrefContainer getEngineSettings() {
 GameEngine::GameEngine() : m_engine("Galaxian", getEngineSettings()) {
     m_engine.onInit([this] {
         m_engine.getWindow().setStyle(ime::WindowStyle::Close);
-        m_engine.pushScene(std::make_unique<MainMenuScene>());
+        m_engine.getWindow().setDefaultOnCloseHandlerEnable(false);
+
+        // Push the initial scene
+        m_engine.pushScene(std::make_unique<LoadScreenScene>());
     });
 }
 

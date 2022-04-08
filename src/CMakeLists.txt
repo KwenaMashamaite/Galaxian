@@ -15,12 +15,13 @@ set(SRC_FILES
         gui/PauseMenuGui.cpp
         gui/GameOverGui.cpp
         gui/GameplayGui.cpp
-        gui/GameplayGui.h
+        gui/LoadScreenGui.cpp
         scene/Scene.cpp
         scene/MainMenuScene.cpp
         scene/PauseMenuScene.cpp
         scene/GameOverScene.cpp
         scene/GameplayScene.cpp
+        scene/LoadScreenScene.cpp
         util/Utils.cpp)
 
 # Resource script files
