@@ -60,17 +60,19 @@ namespace util {
         btn->setTextSize(14.0f);
 
         ime::ui::ButtonRenderer* renderer = btn->getRenderer();
+        renderer->setBorders(ime::Borders{1, 1, 1, 1});
         renderer->setRoundedBorderRadius(20);
         renderer->setHoverTextStyle(ime::TextStyle::Italic);
+        renderer->setTextStyleFocused(renderer->getHoverTextStyle());
         renderer->setBackgroundColour(ime::Colour::Transparent);
         renderer->setBackgroundHoverColour(ime::Colour::Transparent);
         renderer->setBackgroundColourDown(ime::Colour::Transparent);
         renderer->setTextColour(ime::Colour("#808080"));
         renderer->setTextHoverColour(ime::Colour::White);
+        renderer->setFocusedTextColour(renderer->getTextHoverColour());
         renderer->setBorderColour(ime::Colour::Transparent);
-        renderer->setFocusedBorderColour(ime::Colour::Transparent);
+        renderer->setFocusedBorderColour(ime::Colour::Silver);
         renderer->setBorderHoverColour(ime::Colour::Transparent);
-        renderer->setFocusedBorderColour(ime::Colour::Transparent);
         renderer->setBorderColourOnMouseDown(ime::Colour::Transparent);
 
         return btn;

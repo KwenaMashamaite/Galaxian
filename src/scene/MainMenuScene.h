@@ -65,6 +65,9 @@ private:
      * @brief Register ui event handlers
      */
     void registerEventHandlers();
+
+private:
+    std::string m_activeSubMenuPanel;  // The name of the active sub menu panel
 };
 
 #endif //GALAXIAN_MAINMENUGUI_H

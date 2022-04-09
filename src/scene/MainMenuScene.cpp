@@ -24,12 +24,14 @@
 
 #include "MainMenuScene.h"
 #include "gui/MainMenuGui.h"
+#include "gui/widgets/ClosablePanel.h"
 #include "GameplayScene.h"
 #include "scoreboard/Scoreboard.h"
 #include <IME/core/engine/Engine.h>
 #include <IME/ui/widgets/Label.h>
 #include <IME/ui/widgets/Panel.h>
 #include <IME/ui/widgets/Button.h>
+#include <IME/ui/widgets/VerticalLayout.h>
 
 ///////////////////////////////////////////////////////////////
 MainMenuScene::MainMenuScene() {
@@ -43,6 +45,28 @@ void MainMenuScene::onEnter() {
 
     // On boot up, the game cannot be resumed
     getGui().getWidget("btnResume")->setVisible(false);
+
+    // Support main menu navigation with the keyboard
+    getGui().getWidget<ime::ui::Button>("btnPlay")->setFocused(true);
+    getGui().setTabKeyUsageEnabled(false);
+
+    getInput().onKeyUp([this](ime::Keyboard::Key key) {
+        auto* vlButtons = getGui().getWidget<ime::ui::VerticalLayout>("vlButtons");
+
+        if (key == ime::Keyboard::Key::Down)
+            vlButtons->focusNextWidget();
+        else if (key == ime::Keyboard::Key::Up)
+            vlButtons->focusPreviousWidget();
+        else if (key == ime::Keyboard::Key::Enter) {
+            auto* focusedWidget = vlButtons->getFocusedWidget();
+
+            if (focusedWidget)
+                focusedWidget->emit("click");
+        } else if (key == ime::Keyboard::Key::Backspace) {
+            if (!m_activeSubMenuPanel.empty())
+                getGui().getWidget<gui::ClosablePanel>(m_activeSubMenuPanel)->close();
+        }
+    });
 }
 
 ///////////////////////////////////////////////////////////////
@@ -103,9 +127,11 @@ void MainMenuScene::registerEventHandlers() {
     }));
 
     // Hide the main menu panel and display a sub menu panel
-    auto showSubMenu = [&gui](const std::string& subMenuPanel) {
+    auto showSubMenu = [&gui, this](const std::string& subMenuPanel) {
+        m_activeSubMenuPanel = subMenuPanel;
         gui.getWidget("pnlRibbon")->setVisible(false);
         gui.getWidget(subMenuPanel)->setVisible(true);
+        gui.moveWidgetToFront(subMenuPanel);
         gui.getWidget<ime::ui::Panel>("pnlMain")->getRenderer()->setBackgroundTexture("sub-main-menu-background.jpg");
     };
 
@@ -116,13 +142,13 @@ void MainMenuScene::registerEventHandlers() {
     /*-- Sub menu panels event handlers --*/
 
     // Hide the submenu panel and show the main menu panel
-    auto hideSubMenu = [&gui](const std::string& subMenuPanel) {
-        gui.getWidget(subMenuPanel)->setVisible(false);
+    auto showMainMenu = [&gui, this]() {
+        m_activeSubMenuPanel.clear();
         gui.getWidget("pnlRibbon")->setVisible(true);
         gui.getWidget<ime::ui::Panel>("pnlMain")->getRenderer()->setBackgroundTexture("main-menu-background.jpg");
     };
 
-    gui.getWidget("btnCloseOptionsPanel")->on("click", ime::Callback<>(std::bind(hideSubMenu, "pnlOptions")));
-    gui.getWidget("btnCloseAboutPanel")->on("click", ime::Callback<>(std::bind(hideSubMenu, "pnlAbout")));
-    gui.getWidget("btnCloseHighScoresPanel")->on("click", ime::Callback<>(std::bind(hideSubMenu, "pnlHighScores")));
+    gui.getWidget<gui::ClosablePanel>("pnlOptions")->onClose(showMainMenu);
+    gui.getWidget<gui::ClosablePanel>("pnlHighScores")->onClose(showMainMenu);
+    gui.getWidget<gui::ClosablePanel>("pnlAbout")->onClose(showMainMenu);
 }

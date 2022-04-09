@@ -25,6 +25,7 @@
 #include "MainMenuGui.h"
 #include "common/Config.h"
 #include "util/Utils.h"
+#include "widgets/ClosablePanel.h"
 #include <IME/ui/widgets/Panel.h>
 #include <IME/ui/widgets/VerticalLayout.h>
 #include <IME/ui/widgets/HorizontalLayout.h>
@@ -45,28 +46,11 @@ namespace gui {
 
     ///////////////////////////////////////////////////////////////
     ime::ui::Panel::Ptr createSubMenuContainer(const std::string& name) {
-        ime::ui::Panel::Ptr pnlContainer = ime::ui::Panel::create("80%", "80%");
+        auto pnlContainer = std::make_unique<gui::ClosablePanel>("80%", "80%");
         pnlContainer->setVisible(false);
         pnlContainer->setName("pnl" + name);
         pnlContainer->setOrigin(0.5f, 0.5f);
         pnlContainer->setPosition("50%", "50%");
-        pnlContainer->getRenderer()->setBackgroundColour(ime::Colour::Black);
-        pnlContainer->getRenderer()->setBackgroundColour(ime::Colour("#000000BA"));
-        pnlContainer->getRenderer()->setRoundedBorderRadius(8.0f);
-
-        // Panel close button
-        auto btnClose = ime::ui::Button::create("x");
-        btnClose->setName("btnClose" + name + "Panel");
-        btnClose->setOrigin(1.0f, 0.0f);
-        btnClose->setPosition("100%", "0%");
-        btnClose->getRenderer()->setTextColour(ime::Colour::White);
-        btnClose->getRenderer()->setBackgroundColour(ime::Colour::Transparent);
-        btnClose->getRenderer()->setBorderColour(ime::Colour::Transparent);
-        btnClose->getRenderer()->setFocusedBorderColour(ime::Colour::Transparent);
-        btnClose->getRenderer()->setBorderHoverColour(ime::Colour::Transparent);
-        btnClose->getRenderer()->setFocusedBorderColour(ime::Colour::Transparent);
-        btnClose->getRenderer()->setBorderColourOnMouseDown(ime::Colour::Transparent);
-        pnlContainer->addWidget(std::move(btnClose));
 
         return pnlContainer;
     }
@@ -127,6 +111,7 @@ namespace gui {
 
         // Buttons container
         auto vlButtonsContainer = ime::ui::VerticalLayout::create("70%", "28%");
+        vlButtonsContainer->setName("vlButtons");
         vlButtonsContainer->setOrigin(0.5f, 0.5f);
         vlButtonsContainer->setPosition("50%", "50%");
         vlButtonsContainer->getRenderer()->setSpaceBetweenWidgets(12.0f);
