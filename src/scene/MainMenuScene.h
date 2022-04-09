@@ -60,6 +60,11 @@ private:
       * @brief Replace placeholder text with actual player scores from the disk
       */
     void populateScoreboard();
+
+    /**
+     * @brief Register ui event handlers
+     */
+    void registerEventHandlers();
 };
 
 #endif //GALAXIAN_MAINMENUGUI_H

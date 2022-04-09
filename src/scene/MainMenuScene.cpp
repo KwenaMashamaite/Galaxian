@@ -39,66 +39,10 @@ MainMenuScene::MainMenuScene() {
 ///////////////////////////////////////////////////////////////
 void MainMenuScene::onEnter() {
     populateScoreboard();
+    registerEventHandlers();
 
-    /*-- Main menu event handlers  --*/
-
-    ime::ui::GuiContainer& gui = getGui();
-
-    // On boot up, the game is cannot be resumed
-    gui.getWidget("btnResume")->setVisible(false);
-
-    // Resume button handler
-    gui.getWidget("btnResume")->on("click", ime::Callback<>([this] {
-        getEngine().popScene();
-        getEngine().pushCachedScene("GameplayScene");
-    }));
-
-    // Play button handler
-    gui.getWidget("btnPlay")->on("click", ime::Callback<>([this] {
-        getEngine().uncacheScene("GameplayScene");
-        getEngine().popScene();
-        getEngine().pushScene(std::make_unique<GameplayScene>());
-    }));
-
-    // Options button handler
-    gui.getWidget("btnOptions")->on("click", ime::Callback<>([&gui] {
-
-    }));
-
-    // High score button handler
-    gui.getWidget("btnHighScores")->on("click", ime::Callback<>([&gui] {
-        gui.getWidget("pnlRibbon")->setVisible(false);
-        gui.getWidget("pnlHighScores")->setVisible(true);
-        gui.getWidget<ime::ui::Panel>("pnlMain")->getRenderer()->setBackgroundTexture("sub-main-menu-background.jpg");
-    }));
-
-    // About button handler
-    gui.getWidget("btnAbout")->on("click", ime::Callback<>([&gui] {
-        gui.getWidget("pnlRibbon")->setVisible(false);
-        gui.getWidget("pnlAbout")->setVisible(true);
-        gui.getWidget<ime::ui::Panel>("pnlMain")->getRenderer()->setBackgroundTexture("sub-main-menu-background.jpg");
-    }));
-
-    // Exit button handler
-    gui.getWidget("btnExit")->on("click", ime::Callback<>([this] {
-        getEngine().quit();
-    }));
-
-    /*** Sub menu event handlers **/
-
-    // About panel close button handler
-    gui.getWidget("btnCloseAboutPanel")->on("click", ime::Callback<>([&gui] {
-        gui.getWidget("pnlAbout")->setVisible(false);
-        gui.getWidget("pnlRibbon")->setVisible(true);
-        gui.getWidget<ime::ui::Panel>("pnlMain")->getRenderer()->setBackgroundTexture("main-menu-background.jpg");
-    }));
-
-    // High scores close button handler
-    gui.getWidget("btnCloseScoresPanel")->on("click", ime::Callback<>([&gui] {
-        gui.getWidget("pnlHighScores")->setVisible(false);
-        gui.getWidget("pnlRibbon")->setVisible(true);
-        gui.getWidget<ime::ui::Panel>("pnlMain")->getRenderer()->setBackgroundTexture("main-menu-background.jpg");
-    }));
+    // On boot up, the game cannot be resumed
+    getGui().getWidget("btnResume")->setVisible(false);
 }
 
 ///////////////////////////////////////////////////////////////
@@ -132,4 +76,53 @@ void MainMenuScene::populateScoreboard() {
         gui.getWidget<ime::ui::Label>("lblDATE" + std::to_string(count))->setText(score.date);
         count++;
     });
+}
+
+///////////////////////////////////////////////////////////////
+void MainMenuScene::registerEventHandlers() {
+    ime::ui::GuiContainer& gui = getGui();
+
+    /*-- Main panel event handlers --*/
+
+    // Resume button handler
+    gui.getWidget("btnResume")->on("click", ime::Callback<>([this] {
+        getEngine().popScene();
+        getEngine().pushCachedScene("GameplayScene");
+    }));
+
+    // Play button handler
+    gui.getWidget("btnPlay")->on("click", ime::Callback<>([this] {
+        getEngine().uncacheScene("GameplayScene");
+        getEngine().popScene();
+        getEngine().pushScene(std::make_unique<GameplayScene>());
+    }));
+
+    // Exit button handler
+    gui.getWidget("btnExit")->on("click", ime::Callback<>([this] {
+        getEngine().quit();
+    }));
+
+    // Hide the main menu panel and display a sub menu panel
+    auto showSubMenu = [&gui](const std::string& subMenuPanel) {
+        gui.getWidget("pnlRibbon")->setVisible(false);
+        gui.getWidget(subMenuPanel)->setVisible(true);
+        gui.getWidget<ime::ui::Panel>("pnlMain")->getRenderer()->setBackgroundTexture("sub-main-menu-background.jpg");
+    };
+
+    gui.getWidget("btnOptions")->on("click", ime::Callback<>(std::bind(showSubMenu, "pnlOptions")));
+    gui.getWidget("btnHighScores")->on("click", ime::Callback<>(std::bind(showSubMenu, "pnlHighScores")));
+    gui.getWidget("btnAbout")->on("click", ime::Callback<>(std::bind(showSubMenu, "pnlAbout")));
+
+    /*-- Sub menu panels event handlers --*/
+
+    // Hide the submenu panel and show the main menu panel
+    auto hideSubMenu = [&gui](const std::string& subMenuPanel) {
+        gui.getWidget(subMenuPanel)->setVisible(false);
+        gui.getWidget("pnlRibbon")->setVisible(true);
+        gui.getWidget<ime::ui::Panel>("pnlMain")->getRenderer()->setBackgroundTexture("main-menu-background.jpg");
+    };
+
+    gui.getWidget("btnCloseOptionsPanel")->on("click", ime::Callback<>(std::bind(hideSubMenu, "pnlOptions")));
+    gui.getWidget("btnCloseAboutPanel")->on("click", ime::Callback<>(std::bind(hideSubMenu, "pnlAbout")));
+    gui.getWidget("btnCloseHighScoresPanel")->on("click", ime::Callback<>(std::bind(hideSubMenu, "pnlHighScores")));
 }

@@ -44,9 +44,19 @@ namespace gui {
     }
 
     ///////////////////////////////////////////////////////////////
-    ime::ui::Button::Ptr createPanelCloseButton(const std::string& name) {
+    ime::ui::Panel::Ptr createSubMenuContainer(const std::string& name) {
+        ime::ui::Panel::Ptr pnlContainer = ime::ui::Panel::create("80%", "80%");
+        pnlContainer->setVisible(false);
+        pnlContainer->setName("pnl" + name);
+        pnlContainer->setOrigin(0.5f, 0.5f);
+        pnlContainer->setPosition("50%", "50%");
+        pnlContainer->getRenderer()->setBackgroundColour(ime::Colour::Black);
+        pnlContainer->getRenderer()->setBackgroundColour(ime::Colour("#000000BA"));
+        pnlContainer->getRenderer()->setRoundedBorderRadius(8.0f);
+
+        // Panel close button
         auto btnClose = ime::ui::Button::create("x");
-        btnClose->setName(name);
+        btnClose->setName("btnClose" + name + "Panel");
         btnClose->setOrigin(1.0f, 0.0f);
         btnClose->setPosition("100%", "0%");
         btnClose->getRenderer()->setTextColour(ime::Colour::White);
@@ -56,8 +66,9 @@ namespace gui {
         btnClose->getRenderer()->setBorderHoverColour(ime::Colour::Transparent);
         btnClose->getRenderer()->setFocusedBorderColour(ime::Colour::Transparent);
         btnClose->getRenderer()->setBorderColourOnMouseDown(ime::Colour::Transparent);
+        pnlContainer->addWidget(std::move(btnClose));
 
-        return btnClose;
+        return pnlContainer;
     }
 
     ///////////////////////////////////////////////////////////////
@@ -145,32 +156,13 @@ namespace gui {
 
     ///////////////////////////////////////////////////////////////
     ime::ui::Panel::Ptr createOptionsPanel() {
-        auto pnlContainer = ime::ui::Panel::create("80%", "80%");
-        pnlContainer->setVisible(false);
-        pnlContainer->setName("pnlOptions");
-        pnlContainer->setOrigin(0.5f, 0.5f);
-        pnlContainer->setPosition("50%", "50%");
-        pnlContainer->getRenderer()->setBackgroundColour(ime::Colour::Black);
-        pnlContainer->getRenderer()->setBackgroundColour(ime::Colour("#000000BA"));
-        pnlContainer->getRenderer()->setRoundedBorderRadius(8.0f);
-
-        // Close panel button
-        pnlContainer->addWidget(createPanelCloseButton("btnCloseOptionsPanel"));
-
-        return pnlContainer;
+        return createSubMenuContainer("Options");
     }
 
     ///////////////////////////////////////////////////////////////
     ime::ui::Panel::Ptr createAboutPanel() {
         // Prent container
-        auto pnlContainer = ime::ui::Panel::create("80%", "80%");
-        pnlContainer->setVisible(false);
-        pnlContainer->setName("pnlAbout");
-        pnlContainer->setOrigin(0.5f, 0.5f);
-        pnlContainer->setPosition("50%", "50%");
-        pnlContainer->getRenderer()->setBackgroundColour(ime::Colour::Black);
-        pnlContainer->getRenderer()->setBackgroundColour(ime::Colour("#000000BA"));
-        pnlContainer->getRenderer()->setRoundedBorderRadius(8.0f);
+        ime::ui::Panel::Ptr pnlContainer = createSubMenuContainer("About");
 
         // Sub container
         auto* pnlCenterPanel = pnlContainer->addWidget<ime::ui::Panel>(ime::ui::Panel::create("90%", "80%"));
@@ -228,23 +220,13 @@ namespace gui {
         lblCopyright->setPosition("50%", "98%");
         pnlContainer->addWidget(std::move(lblCopyright));
 
-        // Close panel button
-        pnlContainer->addWidget(createPanelCloseButton("btnCloseAboutPanel"));
-
         return pnlContainer;
     }
 
     ///////////////////////////////////////////////////////////////
     ime::ui::Panel::Ptr createHighScorePanel() {
         // Parent container
-        auto pnlContainer = ime::ui::Panel::create("80%", "80%");
-        pnlContainer->setVisible(false);
-        pnlContainer->setName("pnlHighScores");
-        pnlContainer->setOrigin(0.5f, 0.5f);
-        pnlContainer->setPosition("50%", "50%");
-        pnlContainer->getRenderer()->setBackgroundColour(ime::Colour::Black);
-        pnlContainer->getRenderer()->setBackgroundColour(ime::Colour("#000000BA"));
-        pnlContainer->getRenderer()->setRoundedBorderRadius(8.0f);
+        ime::ui::Panel::Ptr pnlContainer = createSubMenuContainer("HighScores");
 
         // High scores label
         auto* lblHighScores = pnlContainer->addWidget<ime::ui::Label>(ime::ui::Label::create("TOP 10 HIGH SCORES"));
@@ -269,9 +251,6 @@ namespace gui {
         hlEntryContainer->addWidget(createList("LEVEL", ime::Colour("#9f5afd"), "1"));
         hlEntryContainer->addWidget(createList("DATE", ime::Colour::Pink, util::getDate()));
         pnlContainer->addWidget(std::move(hlEntryContainer));
-
-        // Close panel button
-        pnlContainer->addWidget(createPanelCloseButton("btnCloseScoresPanel"));
 
         return pnlContainer;
     }
