@@ -25,7 +25,9 @@
 #include "MainMenuScene.h"
 #include "gui/MainMenuGui.h"
 #include "GameplayScene.h"
+#include "scoreboard/Scoreboard.h"
 #include <IME/core/engine/Engine.h>
+#include <IME/ui/widgets/Label.h>
 #include <IME/ui/widgets/Panel.h>
 #include <IME/ui/widgets/Button.h>
 
@@ -36,6 +38,8 @@ MainMenuScene::MainMenuScene() {
 
 ///////////////////////////////////////////////////////////////
 void MainMenuScene::onEnter() {
+    populateScoreboard();
+
     /*-- Main menu event handlers  --*/
 
     ime::ui::GuiContainer& gui = getGui();
@@ -109,4 +113,23 @@ void MainMenuScene::onResumeFromCache() {
 void MainMenuScene::onExit() {
     getGui().getWidget("btnResume")->setVisible(false);
     getGui().getWidget<ime::ui::Button>("btnPlay")->setText("Play");
+}
+
+///////////////////////////////////////////////////////////////
+void MainMenuScene::populateScoreboard() {
+    auto* scoreboard = getCache().getValue<Scoreboard*>("SCOREBOARD");
+
+    // Replace placeholder text with actual Scoreboard data
+    scoreboard->forEach([this, count = 1] (const Score& score) mutable {
+        static const int MAX_NUM_HIGH_SCORES_TO_DISPLAY = 10;
+        if (count > MAX_NUM_HIGH_SCORES_TO_DISPLAY)
+            return;
+
+        auto& gui = getGui();
+        gui.getWidget<ime::ui::Label>("lblNAME" + std::to_string(count))->setText(score.owner);
+        gui.getWidget<ime::ui::Label>("lblSCORE" + std::to_string(count))->setText(std::to_string(score.value));
+        gui.getWidget<ime::ui::Label>("lblLEVEL" + std::to_string(count))->setText(std::to_string(score.level));
+        gui.getWidget<ime::ui::Label>("lblDATE" + std::to_string(count))->setText(score.date);
+        count++;
+    });
 }

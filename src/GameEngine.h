@@ -25,7 +25,9 @@
 #ifndef GALAXIAN_GAMEENGINE_H
 #define GALAXIAN_GAMEENGINE_H
 
+#include "scoreboard/Scoreboard.h"
 #include <IME/core/engine/Engine.h>
+#include <memory>
 
 /**
  * @brief Runs the game
@@ -56,7 +58,8 @@ class GameEngine {
         void run();
 
     private:
-        ime::Engine m_engine;
+        ime::Engine m_engine;                     //!< The game runner
+        std::unique_ptr<Scoreboard> m_scoreboard; //!< The game scoreboard
 };
 
 #endif //GALAXIAN_GAMEENGINE_H

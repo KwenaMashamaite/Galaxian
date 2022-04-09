@@ -74,7 +74,7 @@ namespace gui {
         // Create placeholder text
         for (int i = 1; i <= 10; i++) {
             auto lblEntry = ime::ui::Label::create();
-            lblEntry->setName("lblEntry" + std::to_string(i + 1));
+            lblEntry->setName("lbl" + heading + std::to_string(i));
             lblEntry->setHorizontalAlignment(ime::ui::Label::HorizontalAlignment::Center);
 
             if (heading == "RANK")

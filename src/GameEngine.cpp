@@ -24,6 +24,8 @@
 
 #include "GameEngine.h"
 #include "scene/LoadScreenScene.h"
+#include "util/Utils.h"
+#include <exception>
 
 ///////////////////////////////////////////////////////////////
 ime::PrefContainer getEngineSettings() {
@@ -44,8 +46,45 @@ ime::PrefContainer getEngineSettings() {
 }
 
 ///////////////////////////////////////////////////////////////
+std::unique_ptr<Scoreboard> createScoreboard() {
+    std::unique_ptr<Scoreboard> scoreboard = std::make_unique<Scoreboard>("res/TextFiles", "highscores.ghs");
+
+    try {
+        scoreboard->load();
+    }
+    catch (const std::runtime_error&) {
+        auto defaultScores = std::vector<Score>{
+            Score{"", "Brandon Jnr", 50000, 20},
+            Score{"", "Micheal Fostin", 33700, 15},
+            Score{"", "Megan Bever", 24000, 13},
+            Score{"", "Paul Martinez", 21900, 12},
+            Score{"", "Sydney Willis", 17800, 10},
+            Score{"", "Kate Watts", 15350, 8},
+            Score{"", "Micheal Craig", 12700, 7},
+            Score{"", "Jake Martins", 4300, 4},
+            Score{"", "Tommy Shelby", 3500, 2},
+            Score{"", "John Merc", 2500, 1}
+        };
+
+        const std::string todayDate = util::getDate();
+        for (auto& score : defaultScores)
+            todayDate.copy(score.date, todayDate.length() + 1);
+
+        scoreboard->addScores(defaultScores);
+        scoreboard->save();
+    }
+
+    return scoreboard;
+}
+
+///////////////////////////////////////////////////////////////
 GameEngine::GameEngine() : m_engine("Galaxian", getEngineSettings()) {
     m_engine.onInit([this] {
+        // Init scoreboard
+        m_scoreboard = createScoreboard();
+        m_engine.getCache().addProperty(ime::Property{"SCOREBOARD", m_scoreboard.get()});
+
+        // Configure game window
         m_engine.getWindow().setStyle(ime::WindowStyle::Close);
         m_engine.getWindow().setDefaultOnCloseHandlerEnable(false);
 

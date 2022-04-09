@@ -22,44 +22,32 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GALAXIAN_MAINMENUSCENE_H
-#define GALAXIAN_MAINMENUSCENE_H
+#ifndef GALAXIAN_SCORE_H
+#define GALAXIAN_SCORE_H
 
-#include "Scene.h"
+#pragma pack(push)
+#pragma pack(1)
 
 /**
- * @brief Main menu scene
+ * @brief Game score
  */
-class MainMenuScene : public Scene {
-public:
-    /**
-     * @brief Default Constructor
-     */
-    MainMenuScene();
-
-    /**
-     * @brief Enter the main menu scene
-     *
-     * This function is called once by IME when the scene is entered for
-       the first time
-     */
-    void onEnter() override;
-
-    /**
-     * @brief
-     */
-    void onResumeFromCache() override;
-
-    /**
-     * @brief
-     */
-    void onExit() override;
-
-private:
-    /**
-      * @brief Replace placeholder text with actual player scores from the disk
-      */
-    void populateScoreboard();
+struct Score {
+    char date[18];        // The date the score was created
+    char owner[15];       //!< Name of the player the score belongs to
+    int value;            //!< Points value
+    unsigned int level;   //!< Points level
 };
+#pragma pack(pop)
 
-#endif //GALAXIAN_MAINMENUGUI_H
+/**
+ * @relates Score
+ * @brief Check if a score is greater than another score
+ * @param lhs Left operand
+ * @param rhs Right operand
+ * @return True if @a lhs is greater than @a rhs
+ *
+ * This operator performs comparison using score values
+ */
+extern bool operator>(const Score& lhs, const Score& rhs);
+
+#endif

@@ -22,6 +22,8 @@ set(SRC_FILES
         scene/GameOverScene.cpp
         scene/GameplayScene.cpp
         scene/LoadScreenScene.cpp
+        scoreboard/Score.cpp
+        scoreboard/Scoreboard.cpp
         util/Utils.cpp)
 
 # Resource script files

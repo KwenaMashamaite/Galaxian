@@ -22,44 +22,9 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GALAXIAN_MAINMENUSCENE_H
-#define GALAXIAN_MAINMENUSCENE_H
+#include "Score.h"
 
-#include "Scene.h"
-
-/**
- * @brief Main menu scene
- */
-class MainMenuScene : public Scene {
-public:
-    /**
-     * @brief Default Constructor
-     */
-    MainMenuScene();
-
-    /**
-     * @brief Enter the main menu scene
-     *
-     * This function is called once by IME when the scene is entered for
-       the first time
-     */
-    void onEnter() override;
-
-    /**
-     * @brief
-     */
-    void onResumeFromCache() override;
-
-    /**
-     * @brief
-     */
-    void onExit() override;
-
-private:
-    /**
-      * @brief Replace placeholder text with actual player scores from the disk
-      */
-    void populateScoreboard();
-};
-
-#endif //GALAXIAN_MAINMENUGUI_H
+///////////////////////////////////////////////////////////////
+bool operator>(const Score &lhs, const Score &rhs) {
+    return lhs.value > rhs.value;
+}
