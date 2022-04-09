@@ -144,6 +144,23 @@ namespace gui {
     }
 
     ///////////////////////////////////////////////////////////////
+    ime::ui::Panel::Ptr createOptionsPanel() {
+        auto pnlContainer = ime::ui::Panel::create("80%", "80%");
+        pnlContainer->setVisible(false);
+        pnlContainer->setName("pnlOptions");
+        pnlContainer->setOrigin(0.5f, 0.5f);
+        pnlContainer->setPosition("50%", "50%");
+        pnlContainer->getRenderer()->setBackgroundColour(ime::Colour::Black);
+        pnlContainer->getRenderer()->setBackgroundColour(ime::Colour("#000000BA"));
+        pnlContainer->getRenderer()->setRoundedBorderRadius(8.0f);
+
+        // Close panel button
+        pnlContainer->addWidget(createPanelCloseButton("btnCloseOptionsPanel"));
+
+        return pnlContainer;
+    }
+
+    ///////////////////////////////////////////////////////////////
     ime::ui::Panel::Ptr createAboutPanel() {
         // Prent container
         auto pnlContainer = ime::ui::Panel::create("80%", "80%");
@@ -262,6 +279,7 @@ namespace gui {
     ///////////////////////////////////////////////////////////////
     void MainMenuGui::init(ime::ui::GuiContainer& guiContainer) {
         guiContainer.addWidget(createMainPanel());
+        guiContainer.addWidget(createOptionsPanel());
         guiContainer.addWidget(createHighScorePanel());
         guiContainer.addWidget(createAboutPanel());
     }
