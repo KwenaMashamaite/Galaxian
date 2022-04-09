@@ -31,3 +31,28 @@ void Scene::onInit() {
 
     m_view->init(getGui());
 }
+
+///////////////////////////////////////////////////////////////
+void Scene::onExit() {
+    // This is a workaround, IME v3.1.0 does not reset the state
+    // of the gui when transitioning to another scene. For instance,
+    // if a button was hovered over in the pause menu and we exited
+    // to the main menu. when we return to the pause menu again, the
+    // button still has a hover state even though the mouse is not on
+    // top of it
+
+    // Reset focus state
+    getGui().unfocusAllWidgets();
+
+    // Reset hover state
+    ime::Event event;
+    event.type = ime::Event::MouseMoved;
+    event.mouseMove.x = -9999;
+    getGui().handleEvent(event);
+
+    // Reset left mouse down state
+    event.type = ime::Event::MouseButtonReleased;
+    event.mouseButton.button = ime::input::Mouse::Button::Left;
+    event.mouseButton.x = -9999;
+    getGui().handleEvent(event);
+}

@@ -40,6 +40,11 @@ public:
      */
     void onInit() override;
 
+    /**
+     * @brief Reset the gui state
+     */
+    void onExit() override;
+
 protected:
     std::unique_ptr<gui::IView> m_view; //!< The scenes view
 };
