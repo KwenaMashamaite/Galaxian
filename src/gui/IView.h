@@ -38,6 +38,11 @@ namespace gui {
          * @param guiContainer The container for the scenes ui elements
          */
         virtual void init(ime::ui::GuiContainer& guiContainer) = 0;
+
+        /**
+         * @brief Destructor
+         */
+        virtual ~IView() = default;
     };
 }
 
