@@ -31,7 +31,6 @@
 #include <IME/ui/widgets/Label.h>
 #include <IME/ui/widgets/Panel.h>
 #include <IME/ui/widgets/Button.h>
-#include <IME/ui/widgets/VerticalLayout.h>
 
 ///////////////////////////////////////////////////////////////
 MainMenuScene::MainMenuScene() {
@@ -42,27 +41,14 @@ MainMenuScene::MainMenuScene() {
 void MainMenuScene::onEnter() {
     populateScoreboard();
     registerEventHandlers();
+    enableKeyboardNavigation(true, "btnPlay");
 
     // On boot up, the game cannot be resumed
     getGui().getWidget("btnResume")->setVisible(false);
 
-    // Support main menu navigation with the keyboard
-    getGui().getWidget<ime::ui::Button>("btnPlay")->setFocused(true);
-    getGui().setTabKeyUsageEnabled(false);
-
+    // Enable closing a sub menu panel with the keyboard
     getInput().onKeyUp([this](ime::Keyboard::Key key) {
-        auto* vlButtons = getGui().getWidget<ime::ui::VerticalLayout>("vlButtons");
-
-        if (key == ime::Keyboard::Key::Down)
-            vlButtons->focusNextWidget();
-        else if (key == ime::Keyboard::Key::Up)
-            vlButtons->focusPreviousWidget();
-        else if (key == ime::Keyboard::Key::Enter) {
-            auto* focusedWidget = vlButtons->getFocusedWidget();
-
-            if (focusedWidget)
-                focusedWidget->emit("click");
-        } else if (key == ime::Keyboard::Key::Backspace) {
+        if (key == ime::Keyboard::Key::Backspace) {
             if (!m_activeSubMenuPanel.empty())
                 getGui().getWidget<gui::ClosablePanel>(m_activeSubMenuPanel)->close();
         }
@@ -73,10 +59,12 @@ void MainMenuScene::onEnter() {
 void MainMenuScene::onResumeFromCache() {
     if (getEngine().isSceneCached("GameplayScene")) {
         getGui().getWidget("btnResume")->setVisible(true);
-        getGui().getWidget<ime::ui::Button>("btnResume")->setFocused(true);
         getGui().getWidget<ime::ui::Button>("btnPlay")->setText("New Game");
+        m_defaultFocusedButton = "btnResume";
     } else
-        getGui().getWidget<ime::ui::Button>("btnPlay")->setFocused(true);
+        m_defaultFocusedButton = "btnPlay";
+
+    Scene::onResumeFromCache();
 }
 
 ///////////////////////////////////////////////////////////////

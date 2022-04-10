@@ -24,12 +24,30 @@
 
 #include "Scene.h"
 #include <cassert>
+#include <IME/ui/widgets/VerticalLayout.h>
+#include <IME/ui/widgets/Button.h>
+#include <cassert>
+
+///////////////////////////////////////////////////////////////
+Scene::Scene() : m_keyboardNavHandler(-1) {
+
+}
 
 ///////////////////////////////////////////////////////////////
 void Scene::onInit() {
     assert(m_view);
 
     m_view->init(getGui());
+
+    // We'll be using arrow keys to navigate the menu
+    getGui().setTabKeyUsageEnabled(false);
+}
+
+///////////////////////////////////////////////////////////////
+void Scene::onResumeFromCache() {
+    // Focus the button when the scene is returned to
+    if (m_keyboardNavHandler != -1)
+        getGui().getWidget<ime::ui::Button>(m_defaultFocusedButton)->setFocused(true);
 }
 
 ///////////////////////////////////////////////////////////////
@@ -55,4 +73,35 @@ void Scene::onExit() {
     event.mouseButton.button = ime::input::Mouse::Button::Left;
     event.mouseButton.x = -9999;
     getGui().handleEvent(event);
+}
+
+///////////////////////////////////////////////////////////////
+void Scene::enableKeyboardNavigation(bool enable, const std::string& defaultButton) {
+    if (enable && m_keyboardNavHandler == -1) {
+        // Set default focused button
+        if (!defaultButton.empty()) {
+            assert(!defaultButton.empty() && "There must be a default button when enabling keyboard navigation");
+            m_defaultFocusedButton = defaultButton;
+            getGui().getWidget<ime::ui::Button>(defaultButton)->setFocused(true);
+        }
+
+        // Enable arrow keys navigation
+        m_keyboardNavHandler = getInput().onKeyUp([this](ime::Keyboard::Key key) {
+            auto* vlButtons = getGui().getWidget<ime::ui::VerticalLayout>("vlButtons");
+
+            if (key == ime::Keyboard::Key::Down)
+                vlButtons->focusNextWidget();
+            else if (key == ime::Keyboard::Key::Up)
+                vlButtons->focusPreviousWidget();
+            else if (key == ime::Keyboard::Key::Enter) {
+                auto* focusedWidget = vlButtons->getFocusedWidget();
+
+                if (focusedWidget)
+                    focusedWidget->emit("click");
+            }
+        });
+    } else if (!enable) {
+        getInput().unsubscribe(ime::KeyboardEvent::KeyUp, m_keyboardNavHandler);
+        m_keyboardNavHandler = -1;
+    }
 }

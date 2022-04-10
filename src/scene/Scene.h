@@ -36,9 +36,22 @@
 class Scene : public ime::Scene {
 public:
     /**
+     * @brief Constructor
+     */
+    Scene();
+
+    /**
      * @brief Initialise the scene gui
      */
     void onInit() override;
+
+    /**
+     * @brief Resume scene from cache
+     *
+     * This function is called by IME when the scene is uncached and
+     * pushed to the engine
+     */
+    void onResumeFromCache() override;
 
     /**
      * @brief Reset the gui state
@@ -46,8 +59,28 @@ public:
     void onExit() override;
 
 protected:
-    std::unique_ptr<gui::IView> m_view; //!< The scenes view
-};
+    /**
+     * @brief Enable navigation of the menu with the keyboard arrow keys
+     * @param enable True to enable keyboard navigation or false otherwise
+     * @param defaultButton The name of the default focused button
+     *
+     * @warning This function enables navigation of ime::ui::Button widgets
+     * placed inside a ime::ui::VerticalLayout with the name 'vlButtons'.
+     * Therefore, calling this function with an argument of @a true on a
+     * scene that does not have the aforementioned widget is undefined behavior.
+     * Furthermore, it is also undefined behaviour if the specified default
+     * button cannot be found
+     *
+     * By default keyboard navigation is disabled
+     */
+    void enableKeyboardNavigation(bool enable, const std::string& defaultButton = "");
 
+protected:
+    std::unique_ptr<gui::IView> m_view; //!< The scenes view
+    std::string m_defaultFocusedButton; //!< The name of the default focused button
+
+private:
+    int m_keyboardNavHandler;           //!< The id number of the keyboard navigation handler
+};
 
 #endif //GALAXIAN_SCENE_H

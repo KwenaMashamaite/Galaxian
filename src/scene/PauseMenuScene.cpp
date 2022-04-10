@@ -25,7 +25,6 @@
 #include "PauseMenuScene.h"
 #include "gui/PauseMenuGui.h"
 #include <IME/core/engine/Engine.h>
-#include <IME/ui/widgets/VerticalLayout.h>
 #include <IME/ui/widgets/Button.h>
 
 ///////////////////////////////////////////////////////////////
@@ -37,6 +36,7 @@ PauseMenuScene::PauseMenuScene() {
 void PauseMenuScene::onEnter() {
     registerGuiEventHandlers();
     registerKeyboardEventHandlers();
+    enableKeyboardNavigation(true, "btnResume");
 }
 
 ///////////////////////////////////////////////////////////////
@@ -60,36 +60,9 @@ void PauseMenuScene::registerGuiEventHandlers() {
 
 ///////////////////////////////////////////////////////////////
 void PauseMenuScene::registerKeyboardEventHandlers() {
-    // We'll be using arrow keys to navigate the menu
-    getGui().setTabKeyUsageEnabled(false);
-
-    // Set the resume button as the default focused button
-    getGui().getWidget<ime::ui::Button>("btnResume")->setFocused(true);
-
-    // Allow the menu to be navigated with arrow keys
-    getInput().onKeyUp([this](ime::Keyboard::Key key) {
-        auto* vlButtons = getGui().getWidget<ime::ui::VerticalLayout>("vlButtons");
-
-        if (key == ime::Keyboard::Key::Down)
-            vlButtons->focusNextWidget();
-        else if (key == ime::Keyboard::Key::Up)
-            vlButtons->focusPreviousWidget();
-        else if (key == ime::Keyboard::Key::Enter) {
-            auto* focusedWidget = vlButtons->getFocusedWidget();
-
-            if (focusedWidget)
-                focusedWidget->emit("click");
-        }
-    });
-
     // Return to caller scene (Usually the gameplay scene)
     getInput().onKeyUp([this](ime::Keyboard::Key key) {
         if (key == ime::Keyboard::Key::Escape || key == ime::Keyboard::Key::P)
             getEngine().popScene();
     });
-}
-
-///////////////////////////////////////////////////////////////
-void PauseMenuScene::onResumeFromCache() {
-    getGui().getWidget<ime::ui::Button>("btnResume")->setFocused(true);
 }

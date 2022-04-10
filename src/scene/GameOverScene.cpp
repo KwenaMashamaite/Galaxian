@@ -26,8 +26,6 @@
 #include "GameplayScene.h"
 #include "gui/GameOverGui.h"
 #include <IME/core/engine/Engine.h>
-#include <IME/ui/widgets/VerticalLayout.h>
-#include <IME/ui/widgets/Button.h>
 #include <IME/ui/widgets/Label.h>
 
 ///////////////////////////////////////////////////////////////
@@ -38,18 +36,14 @@ GameOverScene::GameOverScene() {
 ///////////////////////////////////////////////////////////////
 void GameOverScene::onEnter() {
     setCached(true, "GameOverScene");
+    enableKeyboardNavigation(true, "btnReplay");
     populateGui();
     registerEventHandlers();
-
-    // Set the 'play again' button as the default focused button
-    getGui().getWidget<ime::ui::Button>("btnReplay")->setFocused(true);
 }
 
 ///////////////////////////////////////////////////////////////
 void GameOverScene::onResumeFromCache() {
-    // Set the 'play again' button as the default focused button
-    getGui().getWidget<ime::ui::Button>("btnReplay")->setFocused(true);
-
+    Scene::onResumeFromCache();
     populateGui();
 }
 
@@ -82,20 +76,4 @@ void GameOverScene::registerEventHandlers() {
     getGui().getWidget("btnExit")->on("click", ime::Callback<>([this] {
         getEngine().quit();
     }));
-
-    // Allow the menu to be navigated with arrow keys
-    getInput().onKeyUp([this](ime::Keyboard::Key key) {
-        auto* vlButtons = getGui().getWidget<ime::ui::VerticalLayout>("vlButtons");
-
-        if (key == ime::Keyboard::Key::Down)
-            vlButtons->focusNextWidget();
-        else if (key == ime::Keyboard::Key::Up)
-            vlButtons->focusPreviousWidget();
-        else if (key == ime::Keyboard::Key::Enter) {
-            auto* focusedWidget = vlButtons->getFocusedWidget();
-
-            if (focusedWidget)
-                focusedWidget->emit("click");
-        }
-    });
 }
