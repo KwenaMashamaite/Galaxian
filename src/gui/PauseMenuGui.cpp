@@ -33,7 +33,7 @@ namespace gui {
     ///////////////////////////////////////////////////////////////
     void PauseMenuGui::init(ime::ui::GuiContainer& guiContainer) {
         // Prent container
-        auto pnlContainer = ime::ui::Panel::create("80%", "80%");
+        auto pnlContainer = ime::ui::Panel::create("60%", "50%");
         pnlContainer->setName("pnlContainer");
         pnlContainer->setOrigin(0.5f, 0.5f);
         pnlContainer->setPosition("50%", "50%");
@@ -51,7 +51,8 @@ namespace gui {
         pnlContainer->addWidget(std::move(lblHeading));
 
         // Buttons container
-        auto vlButtonsContainer = ime::ui::VerticalLayout::create("70%", "28%");
+        auto vlButtonsContainer = ime::ui::VerticalLayout::create("40%", "28%");
+        vlButtonsContainer->setName("vlButtons");
         vlButtonsContainer->setOrigin(0.5f, 0.5f);
         vlButtonsContainer->setPosition("50%", "50%");
         vlButtonsContainer->getRenderer()->setSpaceBetweenWidgets(12.0f);

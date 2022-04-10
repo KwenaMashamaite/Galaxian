@@ -44,6 +44,25 @@ public:
        the first time
      */
     void onEnter() override;
+
+    /**
+     * @brief Resume scene from cache
+     *
+     * This function is called by IME when the scene is uncached and
+     * pushed to the engine
+     */
+    void onResumeFromCache() override;
+
+private:
+    /**
+     * @brief Register gui input event handlers
+     */
+    void registerGuiEventHandlers();
+
+    /**
+     * @brief Register keyboard input event handlers
+     */
+    void registerKeyboardEventHandlers();
 };
 
 
