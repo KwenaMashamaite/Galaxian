@@ -73,8 +73,10 @@ void MainMenuScene::onEnter() {
 void MainMenuScene::onResumeFromCache() {
     if (getEngine().isSceneCached("GameplayScene")) {
         getGui().getWidget("btnResume")->setVisible(true);
+        getGui().getWidget<ime::ui::Button>("btnResume")->setFocused(true);
         getGui().getWidget<ime::ui::Button>("btnPlay")->setText("New Game");
-    }
+    } else
+        getGui().getWidget<ime::ui::Button>("btnPlay")->setFocused(true);
 }
 
 ///////////////////////////////////////////////////////////////
