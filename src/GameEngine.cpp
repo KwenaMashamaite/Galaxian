@@ -25,7 +25,6 @@
 #include "GameEngine.h"
 #include "scene/LoadScreenScene.h"
 #include "util/Utils.h"
-#include <exception>
 
 ///////////////////////////////////////////////////////////////
 ime::PrefContainer getEngineSettings() {
@@ -87,6 +86,13 @@ GameEngine::GameEngine() : m_engine("Galaxian", getEngineSettings()) {
         // Configure game window
         m_engine.getWindow().setStyle(ime::WindowStyle::Close);
         m_engine.getWindow().setDefaultOnCloseHandlerEnable(false);
+
+        // Initialize game stats
+        auto& cache = m_engine.getCache();
+        cache.addProperty(ime::Property{"HIGH_SCORE", m_scoreboard->getTopScore().value});
+        cache.addProperty(ime::Property{"CURRENT_LEVEL", 1});
+        cache.addProperty(ime::Property{"CURRENT_SCORE", 0});
+        cache.addProperty(ime::Property{"PLAY_TIME", ime::Time::Zero});
 
         // Push the initial scene
         m_engine.pushScene(std::make_unique<LoadScreenScene>());

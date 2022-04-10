@@ -36,6 +36,33 @@ public:
      * @brief Default constructor
      */
     GameOverScene();
+
+    /**
+     * @brief Enter the game over scene
+     *
+     * This function is called once by IME when the scene is entered for
+     * the first time
+     */
+    void onEnter() override;
+
+    /**
+     * @brief Populate the gui when the game over scene is returned to
+     *
+     * This function is called by IME when the scene is uncached and pushed
+     * to the engine
+     */
+    void onResumeFromCache() override;
+
+private:
+    /**
+     * @brief Populate the game over gui
+     */
+    void populateGui();
+
+    /**
+     * @brief Register the scenes event handlers
+     */
+    void registerEventHandlers();
 };
 
 #endif //GALAXIAN_GAMEOVERSCENE_H
