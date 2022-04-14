@@ -44,6 +44,17 @@ public:
      * first time
      */
     void onEnter() override;
+
+private:
+    /**
+     * @brief Initialize the gui
+     */
+    void initGui();
+
+    /**
+     * @brief Register event handlers
+     */
+    void registerEventHandlers();
 };
 
 #endif //GALAXIAN_GAMEPLAYSCENE_H

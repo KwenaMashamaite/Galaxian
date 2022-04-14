@@ -27,27 +27,43 @@
 #include "ScrollingBackgroundScene.h"
 #include "gui/GameplayGui.h"
 #include <IME/core/engine/Engine.h>
+#include <IME/ui/widgets/Label.h>
 
 ///////////////////////////////////////////////////////////////
 GameplayScene::GameplayScene() {
     m_view = std::make_unique<gui::GameplayGui>();
 }
 
+///////////////////////////////////////////////////////////////
 void GameplayScene::onEnter() {
     setCached(true, "GameplayScene");
     setVisibleOnPause(true);
     setBackgroundScene(std::make_unique<ScrollingBackgroundScene>());
+    initGui();
+    registerEventHandlers();
 
+    // Instantiate pause menu once
+    if (!getEngine().isSceneCached("PauseMenuScene"))
+        getEngine().cacheScene("PauseMenuScene", std::make_unique<PauseMenuScene>());
+}
 
-    // Pause game
-    getEngine().cacheScene("PauseMenuScene", std::make_unique<PauseMenuScene>());
+///////////////////////////////////////////////////////////////
+void GameplayScene::initGui() {
+    getGui().getWidget<ime::ui::Label>("lblHighScoreVal")->setText(
+        std::to_string(getCache().getValue<int>("HIGH_SCORE")));
 
+    // Toggle one up label every interval
+    getTimer().setInterval(ime::milliseconds(200), [this] {
+        getGui().getWidget("lblOneUp")->toggleVisibility();
+    });
+}
+
+///////////////////////////////////////////////////////////////
+void GameplayScene::registerEventHandlers() {
     auto pauseGame = [this] { getEngine().pushCachedScene("PauseMenuScene"); };
 
     int handler = getWindow().onClose(pauseGame);
-    onDestruction([handler, this] {
-        getWindow().removeEventListener(handler);
-    });
+    onDestruction([handler, this] { getWindow().removeEventListener(handler); });
 
     getInput().bindKey(ime::Keyboard::Key::P, ime::input::KeyBindType::KeyUp, pauseGame);
     getInput().bindKey(ime::Keyboard::Key::Escape, ime::input::KeyBindType::KeyUp, pauseGame);
