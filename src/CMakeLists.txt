@@ -41,7 +41,7 @@ add_executable(Galaxian ${SRC_FILES} ${RES_FILES})
 
 # Find and link IME
 list(APPEND CMAKE_PREFIX_PATH "${PROJECT_SOURCE_DIR}/extlibs")
-find_package(ime 3.1.0 REQUIRED)
+find_package(ime 3.2.0 REQUIRED)
 target_link_libraries(Galaxian PRIVATE ime)
 
 # Add <project>/ as include directory
