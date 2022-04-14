@@ -41,15 +41,15 @@ void ScrollingBackgroundScene::onEnter() {
     starFieldAnim->setFrameRate(8);
 
     // The first visible background that appears on the screen
-    auto bg1 = std::make_unique<ime::Sprite>("starField.png");
+    auto bg1 = ime::Sprite::create("starField.png");
     bg1->setTag("bg1");
-    bg1->setOrigin(0.0f, bg1->getLocalBounds().height);
-    bg1->setPosition(0.0f, getWindow().getSize().y);
     bg1->getAnimator().addAnimation(std::move(starFieldAnim));
     bg1->getAnimator().startAnimation("starField");
+    bg1->setOrigin(0.0f, bg1->getLocalBounds().height);
+    bg1->setPosition(0.0f, getWindow().getSize().y);
 
     // The background that appears after the first background disappears from the screen
-    auto bg2 = std::make_unique<ime::Sprite>(*bg1);
+    ime::Sprite::Ptr bg2 = bg1->copy();
     bg2->setPosition(bg1->getPosition().x, bg1->getPosition().y - bg1->getLocalBounds().height);
     m_bg2StartPos = bg2->getPosition();
     bg2->setTag("bg2");
