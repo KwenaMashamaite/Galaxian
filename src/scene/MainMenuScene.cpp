@@ -69,7 +69,6 @@ void MainMenuScene::onResumeFromCache() {
 
 ///////////////////////////////////////////////////////////////
 void MainMenuScene::onExit() {
-    Scene::onExit();
     getGui().getWidget("btnResume")->setVisible(false);
     getGui().getWidget<ime::ui::Button>("btnPlay")->setText("Play");
 }

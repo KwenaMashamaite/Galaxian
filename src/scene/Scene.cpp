@@ -47,32 +47,7 @@ void Scene::onInit() {
 void Scene::onResumeFromCache() {
     // Focus the button when the scene is returned to
     if (m_keyboardNavHandler != -1)
-        getGui().getWidget<ime::ui::Button>(m_defaultFocusedButton)->setFocused(true);
-}
-
-///////////////////////////////////////////////////////////////
-void Scene::onExit() {
-    // This is a workaround, IME v3.1.0 does not reset the state
-    // of the gui when transitioning to another scene. For instance,
-    // if a button was hovered over in the pause menu and we exited
-    // to the main menu. when we return to the pause menu again, the
-    // button still has a hover state even though the mouse is not on
-    // top of it
-
-    // Reset focus state
-    getGui().unfocusAllWidgets();
-
-    // Reset hover state
-    ime::Event event;
-    event.type = ime::Event::MouseMoved;
-    event.mouseMove.x = -9999;
-    getGui().handleEvent(event);
-
-    // Reset left mouse down state
-    event.type = ime::Event::MouseButtonReleased;
-    event.mouseButton.button = ime::input::Mouse::Button::Left;
-    event.mouseButton.x = -9999;
-    getGui().handleEvent(event);
+        getGui().getWidget(m_defaultFocusedButton)->setFocused(true);
 }
 
 ///////////////////////////////////////////////////////////////
@@ -82,7 +57,7 @@ void Scene::enableKeyboardNavigation(bool enable, const std::string& defaultButt
         if (!defaultButton.empty()) {
             assert(!defaultButton.empty() && "There must be a default button when enabling keyboard navigation");
             m_defaultFocusedButton = defaultButton;
-            getGui().getWidget<ime::ui::Button>(defaultButton)->setFocused(true);
+            getGui().getWidget(defaultButton)->setFocused(true);
         }
 
         // Enable arrow keys navigation

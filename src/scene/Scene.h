@@ -53,11 +53,6 @@ public:
      */
     void onResumeFromCache() override;
 
-    /**
-     * @brief Reset the gui state
-     */
-    void onExit() override;
-
 protected:
     /**
      * @brief Enable navigation of the menu with the keyboard arrow keys
