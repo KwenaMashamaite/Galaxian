@@ -32,13 +32,18 @@
 namespace gui {
     ///////////////////////////////////////////////////////////////
     void PauseMenuGui::init(ime::ui::GuiContainer& guiContainer) {
-        // Prent container
-        auto pnlContainer = ime::ui::Panel::create("60%", "50%");
+        // Parent container
+        auto pnlContainer = ime::ui::Panel::create();
         pnlContainer->setName("pnlContainer");
-        pnlContainer->setOrigin(0.5f, 0.5f);
-        pnlContainer->setPosition("50%", "50%");
-        pnlContainer->getRenderer()->setBackgroundColour(ime::Colour("#0c0c0cE8"));
-        pnlContainer->getRenderer()->setRoundedBorderRadius(8.0f);
+        pnlContainer->getRenderer()->setBackgroundColour(ime::Colour("#28282866"));
+
+        // Sub parent container
+        auto pnlSubContainer = ime::ui::Panel::create("60%", "50%");
+        pnlSubContainer->setName("pnlSubContainer");
+        pnlSubContainer->setOrigin(0.5f, 0.5f);
+        pnlSubContainer->setPosition("50%", "50%");
+        pnlSubContainer->getRenderer()->setBackgroundColour(ime::Colour("#0c0c0cE8"));
+        pnlSubContainer->getRenderer()->setRoundedBorderRadius(8.0f);
 
         // Paused label
         auto lblHeading = ime::ui::Label::create("GAME PAUSED");
@@ -48,7 +53,7 @@ namespace gui {
         lblHeading->setOrigin(0.5f, 0.0f);
         lblHeading->setPosition("50%", "4%");
         lblHeading->setTextSize(40.0f);
-        pnlContainer->addWidget(std::move(lblHeading));
+        pnlSubContainer->addWidget(std::move(lblHeading));
 
         // Buttons container
         auto vlButtonsContainer = ime::ui::VerticalLayout::create("40%", "28%");
@@ -61,8 +66,9 @@ namespace gui {
         vlButtonsContainer->addWidget(util::createButton("btnResume", "Resume"));
         vlButtonsContainer->addWidget(util::createButton("btnMainMenu", "Main Menu"));
         vlButtonsContainer->addWidget(util::createButton("btnExit", "Exit Game"));
-        pnlContainer->addWidget(std::move(vlButtonsContainer));
+        pnlSubContainer->addWidget(std::move(vlButtonsContainer));
 
+        pnlContainer->addWidget(std::move(pnlSubContainer));
         guiContainer.addWidget(std::move(pnlContainer));
     }
 }
