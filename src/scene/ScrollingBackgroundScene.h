@@ -22,33 +22,48 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "GameplayScene.h"
-#include "PauseMenuScene.h"
-#include "ScrollingBackgroundScene.h"
-#include "gui/GameplayGui.h"
-#include <IME/core/engine/Engine.h>
+#ifndef GALAXIAN_SCROLLINGBACKGROUNDSCENE_H
+#define GALAXIAN_SCROLLINGBACKGROUNDSCENE_H
 
-///////////////////////////////////////////////////////////////
-GameplayScene::GameplayScene() {
-    m_view = std::make_unique<gui::GameplayGui>();
-}
+#include "Scene.h"
 
-void GameplayScene::onEnter() {
-    setCached(true, "GameplayScene");
-    setVisibleOnPause(true);
-    setBackgroundScene(std::make_unique<ScrollingBackgroundScene>());
+/**
+ * @brief A scene that displays an infinite vertical scrolling background
+ */
+class ScrollingBackgroundScene : public ime::Scene {
+public:
+    /**
+     * @brief Default constructor
+     */
+    ScrollingBackgroundScene();
 
+    /**
+     * @brief Enter the scrolling background scene
+     *
+     * This function is called once by IME when the scene is entered for
+     * the first time
+     */
+    void onEnter() override;
 
-    // Pause game
-    getEngine().cacheScene("PauseMenuScene", std::make_unique<PauseMenuScene>());
+    /**
+     * @brief Update the scene at fixed intervals
+     * @param deltaTime The time passed since the last update
+     *
+     * This function is called by IME every fixed frame-rate frame
+     */
+    void onFixedUpdate(ime::Time deltaTime) override;
 
-    auto pauseGame = [this] { getEngine().pushCachedScene("PauseMenuScene"); };
+private:
+    /**
+     * @brief Update a background sprite
+     * @param name The name/tag of the background sprite to be updated
+     * @param deltaTime The time passed since the last update
+     */
+    void update(const std::string& name, const ime::Time& deltaTime);
 
-    int handler = getWindow().onClose(pauseGame);
-    onDestruction([handler, this] {
-        getWindow().removeEventListener(handler);
-    });
+private:
+    float m_speed;                 //!< The scroll m_speed
+    ime::Vector2f m_bg2StartPos;   //!< The start position of the second background sprite
+};
 
-    getInput().bindKey(ime::Keyboard::Key::P, ime::input::KeyBindType::KeyUp, pauseGame);
-    getInput().bindKey(ime::Keyboard::Key::Escape, ime::input::KeyBindType::KeyUp, pauseGame);
-}
+#endif //GALAXIAN_SCROLLINGBACKGROUNDSCENE_H

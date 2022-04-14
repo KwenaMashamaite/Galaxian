@@ -25,7 +25,8 @@ set(SRC_FILES
         scoreboard/Score.cpp
         scoreboard/Scoreboard.cpp
         util/Utils.cpp
-        gui/widgets/ClosablePanel.cpp)
+        gui/widgets/ClosablePanel.cpp
+        scene/ScrollingBackgroundScene.cpp)
 
 # Resource script files
 set(RES_FILES
