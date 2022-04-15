@@ -22,27 +22,24 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GALAXIAN_GALAXYIP_H
-#define GALAXIAN_GALAXYIP_H
+#ifndef GALAXIAN_COLLISIONFILTERING_H
+#define GALAXIAN_COLLISIONFILTERING_H
 
-#include "AttackShip.h"
+#include <IME/Config.h>
 
 /**
- * @brief A player ship
+ * @brief Defines which group of objects are allowed to collide
  */
-class Galaxyip : public AttackShip {
-public:
-    /**
-     * @brief Constructor
-     * @param scene The scene the player ship belongs to
-     */
-    explicit Galaxyip(ime::Scene& scene);
+namespace collision {
+    // Collision categories
+    const static inline ime::Uint16 CATEGORY_PLAYER = 0x0001;     // 1
+    const static inline ime::Uint16 CATEGORY_GALAXIAN = 0x0002;   // 2
+    const static inline ime::Uint16 CATEGORY_BULLET = 0x0004;     // 4
 
-    /**
-     * @brief Get the name of the class
-     * @return The name of the class as declared
-     */
-    std::string getClassName() const override;
-};
+    // Collision masks
+    const static inline ime::Uint16 MASK_GALAXIAN = CATEGORY_PLAYER | CATEGORY_BULLET; // A galaxian collides with the player and bullets but not with other galaxians
+    const static inline ime::Uint16 MASK_PLAYER = CATEGORY_BULLET | CATEGORY_GALAXIAN;
+    const static inline ime::Uint16 MASK_BULLET = CATEGORY_PLAYER | CATEGORY_GALAXIAN;
+}
 
-#endif //GALAXIAN_GALAXYIP_H
+#endif

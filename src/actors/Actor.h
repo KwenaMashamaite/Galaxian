@@ -25,13 +25,16 @@
 #ifndef GALAXIAN_ACTOR_H
 #define GALAXIAN_ACTOR_H
 
-#include <IME/core/object/GridObject.h>
+#include <IME/core/scene/Scene.h>
+#include <IME/core/object/GameObject.h>
+#include <IME/core/physics/rigid_body/RigidBody.h>
+#include <IME/core/physics/rigid_body/colliders/Collider.h>
 #include <string>
 
 /**
  * @brief A base class for all actors in the game
  */
-class Actor : public ime::GridObject {
+class Actor : public ime::GameObject {
 public:
     /**
      * @brief Constructor
@@ -46,9 +49,45 @@ public:
     std::string getClassName() const override;
 
     /**
+     * @brief Get the actors collider
+     * @return The actors collider
+     */
+    ime::Collider* getCollider();
+    const ime::Collider* getCollider() const;
+
+    /**
+     * @brief Set the texture of the actor
+     * @param texture Filename of the texture
+     * @param rect The sub rectangle to display
+     * @throws ime::FileNotFoundException if the specified texture cannot
+     *         be found
+     */
+    void setTexture(const std::string& texture, const ime::UIntRect& rect);
+
+    /**
+     * @brief Set the actors collision filter
+     * @param category The collision category of the actor
+     * @param mask The collision mask of the actor
+     */
+    void setCollisionFilter(ime::Uint16 category, ime::Uint16 musk);
+
+    /**
      * @brief Destructor
      */
     virtual ~Actor() = 0;
+
+private:
+    /**
+     * @brief Attach a ime::BoxCollider to the game object
+     *
+     * @note This function must be called after the objects sprite texture
+     * is set as it uses the sprites bounds to determine the size of the
+     * collider
+     */
+    void attachCollider();
+
+private:
+    int m_colliderId;    //!< The id of the collider attached to the actor
 };
 
 #endif //GALAXIAN_ACTOR_H

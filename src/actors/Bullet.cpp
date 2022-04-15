@@ -25,6 +25,7 @@
 #include "Bullet.h"
 #include "Ship.h"
 #include "AttackShip.h"
+#include "CollisionFiltering.h"
 #include <cassert>
 
 ///////////////////////////////////////////////////////////////
@@ -35,9 +36,8 @@ Bullet::Bullet(ime::Scene &scene, double strength) :
     m_shooter(nullptr),
     m_victim(nullptr)
 {
-    // Prevent all bullets from generating a collision when they overlap
-    setCollisionGroup("bullets");
-    getCollisionExcludeList().add(getCollisionGroup());
+    setTexture("objects-spritesheet.png", ime::UIntRect{89, 192, 1, 4});
+    setCollisionFilter(collision::CATEGORY_BULLET, collision::MASK_BULLET);
 }
 
 ///////////////////////////////////////////////////////////////

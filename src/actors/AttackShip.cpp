@@ -35,7 +35,7 @@ AttackShip::AttackShip(ime::Scene &scene, Origin origin, double firePower) :
 }
 
 ///////////////////////////////////////////////////////////////
-std::unique_ptr<Bullet> AttackShip::fireBullet() {
+std::unique_ptr<Bullet> AttackShip::fireBullet(const ime::Vector2f& velocity) {
     std::unique_ptr<Bullet> bullet;
 
     if (!m_isFireSuspended) {
@@ -43,14 +43,17 @@ std::unique_ptr<Bullet> AttackShip::fireBullet() {
 
         bullet = std::make_unique<Bullet>(getScene(), m_bulletFirePower);
         bullet->setShooter(this);
+        bullet->getTransform().setPosition(getTransform().getPosition());
+        bullet->getRigidBody()->setLinearVelocity(velocity);
+        bullet->onDestruction([this] { m_isFireSuspended = false; });
 
-        // Prevent friendly fire. That is, prevent bullets fired by a galaxian
-        // from shooting another galaxian and so on...
-        bullet->getCollisionExcludeList().add(getCollisionGroup());
-
-        bullet->onDestruction([this] {
-            m_isFireSuspended = false;
-        });
+        // Prevent the bullet from colliding with the ship that fired it. This
+        // will also prevent the bullet from colliding with ships of the same
+        // kind as the shooter ship. For example, a bullet fired by a galaxian
+        // ship will not collide with other galaxian ships
+        ime::CollisionFilterData bulletCollisionFilter = bullet->getCollider()->getCollisionFilterData();
+        bulletCollisionFilter.collisionBitMask &= ~getCollider()->getCollisionFilterData().categoryBitMask;
+        bullet->setCollisionFilter(bulletCollisionFilter.categoryBitMask, bulletCollisionFilter.collisionBitMask);
     }
 
     return bullet;

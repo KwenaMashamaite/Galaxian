@@ -23,13 +23,15 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "Galaxyip.h"
+#include "CollisionFiltering.h"
 
 ///////////////////////////////////////////////////////////////
 Galaxyip::Galaxyip(ime::Scene &scene) :
-    Ship(scene, Ship::Origin::Earth)
+    AttackShip(scene, Ship::Origin::Earth)
 {
-    setCollisionGroup("player");
     setHealth(4 * Ship::DEFAULT_HEALTH);
+    setTexture("objects-spritesheet.png", ime::UIntRect{17, 231, 16, 16});
+    setCollisionFilter(collision::CATEGORY_PLAYER, collision::MASK_PLAYER);
 }
 
 ///////////////////////////////////////////////////////////////

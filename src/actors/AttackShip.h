@@ -48,6 +48,7 @@ public:
 
     /**
      * @brief Fire a bullet
+     * @param velocity The velocity of the bullet
      * @return The fired bullet or nullptr if firing is suspended
      *
      * @note The ship won't be able to fire another bullet until the returned
@@ -57,7 +58,7 @@ public:
      *
      * @see isFiringSuspended
      */
-    std::unique_ptr<Bullet> fireBullet();
+    std::unique_ptr<Bullet> fireBullet(const ime::Vector2f& velocity);
 
     /**
      * @brief Check if the ship can fire a bullet or not

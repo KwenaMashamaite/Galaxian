@@ -23,6 +23,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "Galaxian.h"
+#include "CollisionFiltering.h"
 
 ///////////////////////////////////////////////////////////////
 Galaxian::Galaxian(ime::Scene &scene, Type type) :
@@ -31,9 +32,7 @@ Galaxian::Galaxian(ime::Scene &scene, Type type) :
     m_isInFormation(false),
     m_type(type)
 {
-    // Prevent collisions between galaxians
-    setCollisionGroup("galaxians");
-    getCollisionExcludeList().add(getCollisionGroup());
+    setCollisionFilter(collision::CATEGORY_GALAXIAN, collision::MASK_GALAXIAN);
 }
 
 ///////////////////////////////////////////////////////////////
