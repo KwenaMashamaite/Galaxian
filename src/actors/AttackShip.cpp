@@ -26,8 +26,9 @@
 #include "Bullet.h"
 
 ///////////////////////////////////////////////////////////////
-AttackShip::AttackShip(ime::Scene &scene, Origin origin, double firePower) :
+AttackShip::AttackShip(ime::Scene &scene, Origin origin, bool rapidShooter, double firePower) :
     Ship(scene, origin),
+    m_isRapidShooter(rapidShooter),
     m_bulletFirePower(firePower),
     m_isFireSuspended(false)
 {
@@ -36,25 +37,26 @@ AttackShip::AttackShip(ime::Scene &scene, Origin origin, double firePower) :
 
 ///////////////////////////////////////////////////////////////
 std::unique_ptr<Bullet> AttackShip::fireBullet(const ime::Vector2f& velocity) {
-    std::unique_ptr<Bullet> bullet;
+    if (m_isFireSuspended)
+        return nullptr;
 
-    if (!m_isFireSuspended) {
+    std::unique_ptr<Bullet> bullet = std::make_unique<Bullet>(getScene(), m_bulletFirePower);
+    bullet->setShooter(this);
+    bullet->getTransform().setPosition(getTransform().getPosition());
+    bullet->getRigidBody()->setLinearVelocity(velocity);
+
+    if (!m_isRapidShooter) {
         m_isFireSuspended = true;
-
-        bullet = std::make_unique<Bullet>(getScene(), m_bulletFirePower);
-        bullet->setShooter(this);
-        bullet->getTransform().setPosition(getTransform().getPosition());
-        bullet->getRigidBody()->setLinearVelocity(velocity);
         bullet->onDestruction([this] { m_isFireSuspended = false; });
-
-        // Prevent the bullet from colliding with the ship that fired it. This
-        // will also prevent the bullet from colliding with ships of the same
-        // kind as the shooter ship. For example, a bullet fired by a galaxian
-        // ship will not collide with other galaxian ships
-        ime::CollisionFilterData bulletCollisionFilter = bullet->getCollider()->getCollisionFilterData();
-        bulletCollisionFilter.collisionBitMask &= ~getCollider()->getCollisionFilterData().categoryBitMask;
-        bullet->setCollisionFilter(bulletCollisionFilter.categoryBitMask, bulletCollisionFilter.collisionBitMask);
     }
+
+    // Prevent the bullet from colliding with the ship that fired it. This
+    // will also prevent the bullet from colliding with ships of the same
+    // kind as the shooter ship. For example, a bullet fired by a galaxian
+    // ship will not collide with other galaxian ships
+    ime::CollisionFilterData bulletCollisionFilter = bullet->getCollider()->getCollisionFilterData();
+    bulletCollisionFilter.collisionBitMask &= ~getCollider()->getCollisionFilterData().categoryBitMask;
+    bullet->setCollisionFilter(bulletCollisionFilter.categoryBitMask, bulletCollisionFilter.collisionBitMask);
 
     return bullet;
 }

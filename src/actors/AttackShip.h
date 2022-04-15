@@ -39,22 +39,28 @@ public:
      * @brief Constructor
      * @param scene The scene the ship belongs to
      * @param origin The ships origin
+     * @param rapidShooter True if the ship can fire bullets in succession, otherwise false
      * @param firePower The bullet fire power of the ship
      *
-     * The bullet fire power indicates the amount of damage inflicted on
-     * other ships by bullets fired by this ship
+     * If the @a rapidShooter argument is set to false, the ship can only fire one
+     * bullet at a time. Once it fires a bullet, it will not be able to fire
+     * another one until its current fired bullet is destroyed.
+     *
+     * The @a firePower argument indicates the amount of damage inflicted on
+     * ships hit by bullets fired by this ship
      */
-    explicit AttackShip(ime::Scene& scene, Origin origin, double firePower = Bullet::DEFAULT_STRENGTH);
+    explicit AttackShip(ime::Scene& scene, Origin origin, bool rapidShooter,
+        double firePower = Bullet::DEFAULT_STRENGTH);
 
     /**
      * @brief Fire a bullet
      * @param velocity The velocity of the bullet
      * @return The fired bullet or nullptr if firing is suspended
      *
-     * @note The ship won't be able to fire another bullet until the returned
-     * bullet is destroyed. This can happen when the bullet leaves the game
-     * window or hits another ship. In other words, the ship can only fire one
-     * bullet at a time
+     * @note If the ship is not a rapid shooter then it won't be able to fire
+     * another bullet until the returned bullet is destroyed. This can happen
+     * when the bullet leaves the game window or hits another ship. In other
+     * words, the ship can only fire one bullet at a time
      *
      * @see isFiringSuspended
      */
@@ -75,6 +81,7 @@ public:
     std::string getClassName() const override;
 
 private:
+    bool m_isRapidShooter;      //!< A flag indicating whether or not the ship can fire bullets in succession
     double m_bulletFirePower;   //!< The power of the bullet fired by this ship
     bool m_isFireSuspended;     //!< A flag indicating whether or not the ship can fire a bullet
 };

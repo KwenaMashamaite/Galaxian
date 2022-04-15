@@ -27,7 +27,7 @@
 
 ///////////////////////////////////////////////////////////////
 Galaxian::Galaxian(ime::Scene &scene, Type type) :
-    AttackShip(scene, Ship::Origin::OuterSpace),
+    AttackShip(scene, Ship::Origin::OuterSpace, true),
     m_isDiving(false),
     m_isInFormation(false),
     m_type(type)

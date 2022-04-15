@@ -27,7 +27,7 @@
 
 ///////////////////////////////////////////////////////////////
 Galaxyip::Galaxyip(ime::Scene &scene) :
-    AttackShip(scene, Ship::Origin::Earth)
+    AttackShip(scene, Ship::Origin::Earth, false)
 {
     setHealth(4 * Ship::DEFAULT_HEALTH);
     setTexture("objects-spritesheet.png", ime::UIntRect{17, 231, 16, 16});
