@@ -24,6 +24,7 @@
 
 #include "AttackShip.h"
 #include "Bullet.h"
+#include <IME/graphics/Window.h>
 
 ///////////////////////////////////////////////////////////////
 AttackShip::AttackShip(ime::Scene &scene, Origin origin, bool rapidShooter, double firePower) :
@@ -44,6 +45,15 @@ std::unique_ptr<Bullet> AttackShip::fireBullet(const ime::Vector2f& velocity) {
     bullet->setShooter(this);
     bullet->getTransform().setPosition(getTransform().getPosition());
     bullet->getRigidBody()->setLinearVelocity(velocity);
+
+    // Deactivate the bullet when it leaves the window
+    bullet->onPropertyChange("position", [this, b = bullet.get()](const ime::Property& property) {
+        static ime::Vector2u winSize = getScene().getWindow().getSize();
+        auto position = property.getValue<ime::Vector2f>();
+
+        if (position.y < 0.0f || position.y > winSize.y)
+            b->setActive(false);
+    });
 
     if (!m_isRapidShooter) {
         m_isFireSuspended = true;
