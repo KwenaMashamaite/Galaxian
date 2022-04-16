@@ -27,7 +27,7 @@
 
 ///////////////////////////////////////////////////////////////
 ScrollingBackgroundScene::ScrollingBackgroundScene() :
-    m_speed(25)
+    m_speed(300)
 {
 
 }

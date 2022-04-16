@@ -26,8 +26,12 @@
 #include "PauseMenuScene.h"
 #include "ScrollingBackgroundScene.h"
 #include "gui/GameplayGui.h"
+#include "actors/Galaxyip.h"
+#include "actors/CollisionFiltering.h"
 #include <IME/core/engine/Engine.h>
 #include <IME/ui/widgets/Label.h>
+#include <IME/core/physics/rigid_body/PhysicsEngine.h>
+#include <IME/core/physics/rigid_body/colliders/BoxCollider.h>
 
 ///////////////////////////////////////////////////////////////
 GameplayScene::GameplayScene() {
@@ -41,6 +45,9 @@ void GameplayScene::onEnter() {
     setBackgroundScene(std::make_unique<ScrollingBackgroundScene>());
     initGui();
     registerEventHandlers();
+    initPhysicsEngine();
+    addWindowBorders();
+    createPlayerShip();
 
     // Instantiate pause menu once
     if (!getEngine().isSceneCached("PauseMenuScene"))
@@ -67,4 +74,81 @@ void GameplayScene::registerEventHandlers() {
 
     getInput().bindKey(ime::Keyboard::Key::P, ime::input::KeyBindType::KeyUp, pauseGame);
     getInput().bindKey(ime::Keyboard::Key::Escape, ime::input::KeyBindType::KeyUp, pauseGame);
+}
+
+///////////////////////////////////////////////////////////////
+void GameplayScene::initPhysicsEngine() {
+    const ime::Vector2f gravity = {0, 0};
+    createPhysicsEngine(gravity);
+
+#ifndef NDEBUG
+    getPhysicsEngine().setDebugDrawEnable(true);
+#else
+    getPhysicsEngine().setDebugDrawEnable(false);
+#endif
+}
+
+///////////////////////////////////////////////////////////////
+void GameplayScene::addWindowBorders() {
+    ime::RigidBody::Ptr rigidBody = getPhysicsEngine().createBody(ime::RigidBody::Type::Static);
+    ime::Collider* collider = rigidBody->attachCollider(ime::BoxCollider::create(ime::Vector2f(1.0f, (float) getWindow().getSize().y)));
+
+    ime::CollisionFilterData colFilterData;
+    colFilterData.categoryBitMask = collision::CATEGORY_VERT_WIN_BORDER;
+    colFilterData.collisionBitMask = collision::MASK_VERT_WIN_BORDER;
+    collider->setCollisionFilter(colFilterData);
+
+    // Left window border
+    ime::GameObject::Ptr leftBorder = ime::GameObject::create(*this);
+    leftBorder->attachRigidBody(std::move(rigidBody));
+    leftBorder->getTransform().setPosition({0.5f, getWindow().getSize().y / 2.0f});
+
+    // Right window border
+    ime::GameObject::Ptr rightBorder = leftBorder->copy();
+    rightBorder->getTransform().setPosition(ime::Vector2f(getWindow().getSize().x, getWindow().getSize().y / 2.0f));
+
+    getGameObjects().add("window-borders", std::move(leftBorder));
+    getGameObjects().add("window-borders", std::move(rightBorder));
+}
+
+///////////////////////////////////////////////////////////////
+void GameplayScene::createPlayerShip() {
+    auto* playerShip = getGameObjects().add<Galaxyip>(std::make_unique<Galaxyip>(*this));
+    playerShip->setTag("playerShip");
+    playerShip->getTransform().setPosition(getWindow().getSize().x / 2.0f,
+        getWindow().getSize().y - 1.5f * playerShip->getSprite().getGlobalBounds().height);
+
+    // Move the player
+    getInput().onKeyDown([playerShip](ime::Keyboard::Key key) {
+        const static ime::Vector2f shipSpeed = {300.0f, 0.0f};
+
+        if (key == ime::Keyboard::Key::Left)
+            playerShip->getRigidBody()->setLinearVelocity(-shipSpeed);
+        else if (key == ime::Keyboard::Key::Right)
+            playerShip->getRigidBody()->setLinearVelocity(shipSpeed);
+    });
+
+    // Stop the player
+    getInput().onKeyUp([playerShip](ime::Keyboard::Key key) {
+        if (key == ime::Keyboard::Key::Left || key == ime::Keyboard::Key::Right)
+            playerShip->getRigidBody()->setLinearVelocity(ime::Vector2f{0.0f, 0.0f});
+    });
+
+    // Attempt to fire the players bullet
+    getInput().onKeyDown([this, playerShip](ime::Keyboard::Key key) {
+        const static ime::Vector2f bulletVelocity = {0.0f, -600.0f};
+
+        if (key == ime::Keyboard::Key::Space) {
+            std::unique_ptr<Bullet> bullet = playerShip->fireBullet(bulletVelocity);
+
+            if (bullet)
+                getGameObjects().add("bullets", std::move(bullet));
+        }
+    });
+}
+
+void GameplayScene::onFrameEnd() {
+    getGameObjects().removeIf([](const ime::GameObject* gameObject) {
+        return !gameObject->isActive();
+    });
 }

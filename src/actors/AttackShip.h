@@ -80,6 +80,27 @@ public:
      */
     std::string getClassName() const override;
 
+    /**
+     * @brief Handle a bullet fire event
+     *
+     * This function is called every time the ship fires a bullet. It is
+     * called for both rapid shooters and non-rapid shooters
+     *
+     * @see onReload
+     */
+    virtual void onFire() {}
+
+    /**
+     * @brief Handle a bullet reload event
+     *
+     * This function is only called on non-rapid shooter ships. Rapid
+     * shooters do not have to wait for a reload before firing a bullet
+     * again
+     *
+     * @see onFire
+     */
+    virtual void onReload() {}
+
 private:
     bool m_isRapidShooter;      //!< A flag indicating whether or not the ship can fire bullets in succession
     double m_bulletFirePower;   //!< The power of the bullet fired by this ship

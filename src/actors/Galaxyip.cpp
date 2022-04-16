@@ -30,11 +30,23 @@ Galaxyip::Galaxyip(ime::Scene &scene) :
     AttackShip(scene, Ship::Origin::Earth, false)
 {
     setHealth(4 * Ship::DEFAULT_HEALTH);
-    setTexture("objects-spritesheet.png", ime::UIntRect{17, 231, 16, 16});
+    setTexture("objects-spritesheet.png", ime::UIntRect{2, 227, 13, 20});
     setCollisionFilter(collision::CATEGORY_PLAYER, collision::MASK_PLAYER);
 }
 
 ///////////////////////////////////////////////////////////////
 std::string Galaxyip::getClassName() const {
     return "Galaxyip";
+}
+
+///////////////////////////////////////////////////////////////
+void Galaxyip::onFire() {
+    getSprite().setTextureRect(ime::UIntRect{19, 231, 13, 16});
+    resetSpriteOrigin();
+}
+
+///////////////////////////////////////////////////////////////
+void Galaxyip::onReload() {
+    getSprite().setTextureRect(ime::UIntRect{2, 227, 13, 20});
+    resetSpriteOrigin();
 }

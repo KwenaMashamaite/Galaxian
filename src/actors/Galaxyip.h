@@ -43,6 +43,20 @@ public:
      * @return The name of the class as declared
      */
     std::string getClassName() const override;
+
+    /**
+     * @brief Update the ship texture
+     *
+     * The new texture indicates that the ship is ready to fire another bullet
+     */
+    void onReload() override;
+
+    /**
+     * @brief Update ship texture
+     *
+     * The new texture indicates that the ship cannot fire a new bullet yet
+     */
+    void onFire() override;
 };
 
 #endif //GALAXIAN_GALAXYIP_H

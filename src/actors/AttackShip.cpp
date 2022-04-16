@@ -57,7 +57,10 @@ std::unique_ptr<Bullet> AttackShip::fireBullet(const ime::Vector2f& velocity) {
 
     if (!m_isRapidShooter) {
         m_isFireSuspended = true;
-        bullet->onDestruction([this] { m_isFireSuspended = false; });
+        bullet->onDestruction([this] {
+            m_isFireSuspended = false;
+            onReload();
+        });
     }
 
     // Prevent the bullet from colliding with the ship that fired it. This
@@ -67,6 +70,8 @@ std::unique_ptr<Bullet> AttackShip::fireBullet(const ime::Vector2f& velocity) {
     ime::CollisionFilterData bulletCollisionFilter = bullet->getCollider()->getCollisionFilterData();
     bulletCollisionFilter.collisionBitMask &= ~getCollider()->getCollisionFilterData().categoryBitMask;
     bullet->setCollisionFilter(bulletCollisionFilter.categoryBitMask, bulletCollisionFilter.collisionBitMask);
+
+    onFire();
 
     return bullet;
 }

@@ -45,6 +45,13 @@ public:
      */
     void onEnter() override;
 
+    /**
+     * @brief Destroy inactive game objects
+     *
+     * This function is called by IME at the end of the current frame
+     */
+    void onFrameEnd() override;
+
 private:
     /**
      * @brief Initialize the gui
@@ -55,6 +62,23 @@ private:
      * @brief Register event handlers
      */
     void registerEventHandlers();
+
+    /**
+     * @brief Create the 2D physics engine
+     */
+    void initPhysicsEngine();
+
+    /**
+     * @brief Add vertical window borders
+     *
+     * This borders prevent the player from leaving the game window
+     */
+    void addWindowBorders();
+
+    /**
+     * @brief Create the player ship
+     */
+    void createPlayerShip();
 };
 
 #endif //GALAXIAN_GAMEPLAYSCENE_H
