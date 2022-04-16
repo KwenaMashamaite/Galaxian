@@ -130,8 +130,13 @@ void GameplayScene::createPlayerShip() {
 
     // Stop the player
     getInput().onKeyUp([playerShip](ime::Keyboard::Key key) {
-        if (key == ime::Keyboard::Key::Left || key == ime::Keyboard::Key::Right)
+        ime::Vector2f playerVelocity = playerShip->getRigidBody()->getLinearVelocity();
+
+        if ((key == ime::Keyboard::Key::Left && playerVelocity.x < 0) ||
+            (key == ime::Keyboard::Key::Right && playerVelocity.x > 0))
+        {
             playerShip->getRigidBody()->setLinearVelocity(ime::Vector2f{0.0f, 0.0f});
+        }
     });
 
     // Attempt to fire the players bullet
