@@ -35,11 +35,14 @@
 ///////////////////////////////////////////////////////////////
 void loadGameAssets() {
     ime::ResourceLoader::loadFromFile(ime::ResourceType::Font, {
-        "Entanglement-rgpRB.ttf"
+        "Entanglement-rgpRB.ttf", "ChaletLondonNineteenSixty.ttf",
+        "Emulogic-zrEw.ttf", "GameOverDude-KYXy.ttf"
     });
 
     ime::ResourceLoader::loadFromFile(ime::ResourceType::Texture,  {
-        "main-menu-background.jpg", "sub-main-menu-background.jpg"
+        "main-menu-background.jpg", "sub-main-menu-background.jpg",
+        "game-over-menu-background.jpg", "objects-spritesheet.png",
+        "starField.png", "starFieldSpriteSheet.png"
     });
 }
 
