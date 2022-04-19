@@ -32,11 +32,19 @@ namespace gui {
      * @brief Gameplay scene gui
      */
     class GameplayGui : public IView {
+    public:
         /**
          * @brief Initialize the scene gui
-         * @param guiContainer Container for pause menu ui elements
+         * @param guiContainer Container for the gameplay ui elements
          */
         void init(ime::ui::GuiContainer& guiContainer) override;
+
+        /**
+         * @brief Displays the number of lives at the bottom left of the screen
+         * @param guiContainer Container for the gameplay ui elements
+         * @param lives The number of lives to display
+         */
+        static void addLives(ime::ui::GuiContainer& guiContainer, int lives);
     };
 }
 

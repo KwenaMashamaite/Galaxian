@@ -118,6 +118,8 @@ void GameplayScene::createPlayerShip() {
     playerShip->getTransform().setPosition(getWindow().getSize().x / 2.0f,
         getWindow().getSize().y - 1.5f * playerShip->getSprite().getGlobalBounds().height);
 
+    gui::GameplayGui::addLives(getGui(), playerShip->getHeath() / 100);
+
     // Move the player
     getInput().onKeyDown([playerShip](ime::Keyboard::Key key) {
         const static ime::Vector2f shipSpeed = {300.0f, 0.0f};

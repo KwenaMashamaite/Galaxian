@@ -26,12 +26,15 @@
 #include <IME/ui/widgets/Label.h>
 #include <IME/ui/widgets/Picture.h>
 #include <IME/ui/widgets/Panel.h>
+#include <IME/ui/widgets/HorizontalLayout.h>
+#include <cassert>
 
 namespace gui {
     ///////////////////////////////////////////////////////////////
     void GameplayGui::init(ime::ui::GuiContainer &guiContainer) {
         // Parent container
         auto pnlContainer = ime::ui::Panel::create();
+        pnlContainer->setName("pnlContainer");
         pnlContainer->getRenderer()->setFont("Emulogic-zrEw.ttf");
         pnlContainer->getRenderer()->setBackgroundColour(ime::Colour::Transparent);
 
@@ -62,5 +65,22 @@ namespace gui {
         pnlContainer->addWidget(std::move(lblHighScoreValue));
 
         guiContainer.addWidget(std::move(pnlContainer));
+    }
+
+    void GameplayGui::addLives(ime::ui::GuiContainer& guiContainer, int lives) {
+        assert(lives > 0);
+
+        ime::ui::Picture::Ptr picLife = ime::ui::Picture::create("objects-spritesheet.png", ime::UIntRect{127, 238, 7, 9});
+
+        ime::ui::HorizontalLayout::Ptr container = ime::ui::HorizontalLayout::create("8%", "4%");
+        container->getRenderer()->setSpaceBetweenWidgets(4);
+        container->setOrigin(0.0f, 1.0f);
+        container->setPosition("2%", "99%");
+
+        for (int i = 0; i < lives - 1; i++)
+            container->addWidget(picLife->copy());
+
+        container->addWidget(std::move(picLife));
+        guiContainer.getWidget<ime::ui::Panel>("pnlContainer")->addWidget(std::move(container));
     }
 }
