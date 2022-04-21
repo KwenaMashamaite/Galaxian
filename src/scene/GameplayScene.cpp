@@ -35,7 +35,9 @@
 #include <IME/core/physics/rigid_body/colliders/BoxCollider.h>
 
 ///////////////////////////////////////////////////////////////
-GameplayScene::GameplayScene() {
+GameplayScene::GameplayScene() :
+    m_newLevelPendingStart(false)
+{
     m_view = std::make_unique<gui::GameplayGui>();
 }
 
@@ -187,4 +189,26 @@ void GameplayScene::onFrameEnd() {
     getGameObjects().removeIf([](const ime::GameObject* gameObject) {
         return !gameObject->isActive();
     });
+
+    // Create new enemy ship formation and update level when the current formation is destroyed
+    ime::GameObjectContainer& gameObjects = getGameObjects();
+
+    if (!m_newLevelPendingStart &&
+        gameObjects.getGroup("drones").getCount() == 0 &&
+        gameObjects.getGroup("emissaries").getCount() == 0 &&
+        gameObjects.getGroup("escorts").getCount() == 0 &&
+        gameObjects.getGroup("flagships").getCount() == 0)
+    {
+        m_newLevelPendingStart = true;
+
+        getTimer().setTimeout(ime::seconds(4), [this] {
+            m_newLevelPendingStart = false;
+
+            auto nextLevel = getCache().getValue<int>("CURRENT_LEVEL") + 1;
+            getCache().setValue("CURRENT_LEVEL", nextLevel);
+            getGui().getWidget<ime::ui::Label>("lblLevelVal")->setText(std::to_string(nextLevel));
+
+            createGalaxians();
+        });
+    }
 }

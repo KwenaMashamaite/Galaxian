@@ -57,7 +57,7 @@ GalaxianFormation::GalaxianFormation(ime::Scene &scene) :
         auto emissary = std::make_unique<Emissary>(scene);
         ime::Vector2f spriteSize = emissary->getSprite().getGlobalBounds().getSize();
         emissary->getTransform().setPosition(startPos.x + 1.5 * i * spriteSize.x, startPos.y);
-        m_objects.add("drones", std::move(emissary));
+        m_objects.add("emissaries", std::move(emissary));
     }
 
     // Create Escort ships
@@ -68,7 +68,7 @@ GalaxianFormation::GalaxianFormation(ime::Scene &scene) :
         auto escort = std::make_unique<Escort>(scene);
         ime::Vector2f spriteSize = escort->getSprite().getGlobalBounds().getSize();
         escort->getTransform().setPosition(startPos.x + 1.5 * i * spriteSize.x, startPos.y);
-        m_objects.add("drones", std::move(escort));
+        m_objects.add("escorts", std::move(escort));
     }
 
     // Create Flagship ships
@@ -79,6 +79,6 @@ GalaxianFormation::GalaxianFormation(ime::Scene &scene) :
         auto flagship = std::make_unique<Flagship>(scene);
         ime::Vector2f spriteSize = flagship->getSprite().getGlobalBounds().getSize();
         flagship->getTransform().setPosition(startPos.x + 4.5f * i * spriteSize.x, startPos.y);
-        m_objects.add("drones", std::move(flagship));
+        m_objects.add("flagships", std::move(flagship));
     }
 }

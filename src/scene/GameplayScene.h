@@ -95,6 +95,7 @@ private:
 
 private:
     std::unique_ptr<GalaxianFormation> m_galaxianFormation;
+    bool m_newLevelPendingStart;                                //!< A flag indicating whether or not a new galaxian formation should be generated
 };
 
 #endif //GALAXIAN_GAMEPLAYSCENE_H
