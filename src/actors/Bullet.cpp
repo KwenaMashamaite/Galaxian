@@ -104,3 +104,8 @@ bool Bullet::isFired() const {
 std::string Bullet::getClassName() const {
     return "Bullet";
 }
+
+///////////////////////////////////////////////////////////////
+Bullet::~Bullet() {
+    emitDestruction();
+}

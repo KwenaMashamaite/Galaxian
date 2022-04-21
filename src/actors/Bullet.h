@@ -127,6 +127,11 @@ public:
      */
     std::string getClassName() const override;
 
+    /**
+     * @brief Destructor
+     */
+    ~Bullet();
+
 private:
     double m_strength;      //!< The strength of the bullet
     bool m_isFired;         //!< A flag indicating whether or not the bullet is fired

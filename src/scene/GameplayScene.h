@@ -87,6 +87,12 @@ private:
      */
     void createGalaxians();
 
+    /**
+     * @brief Update cache and view score values
+     * @param points The points to update the score by
+     */
+    void updateScore(int points);
+
 private:
     std::unique_ptr<GalaxianFormation> m_galaxianFormation;
 };

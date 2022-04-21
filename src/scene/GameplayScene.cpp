@@ -28,6 +28,7 @@
 #include "gui/GameplayGui.h"
 #include "actors/Galaxyip.h"
 #include "actors/CollisionFiltering.h"
+#include "actors/Galaxian.h"
 #include <IME/core/engine/Engine.h>
 #include <IME/ui/widgets/Label.h>
 #include <IME/core/physics/rigid_body/PhysicsEngine.h>
@@ -149,8 +150,17 @@ void GameplayScene::createPlayerShip() {
         if (key == ime::Keyboard::Key::Space) {
             std::unique_ptr<Bullet> bullet = playerShip->fireBullet(bulletVelocity);
 
-            if (bullet)
+            if (bullet) {
+                // Update the scoreboard when the bullet hits an enemy ship
+                bullet->onDestruction([this, b = bullet.get()] {
+                    auto* victim = dynamic_cast<Galaxian*>(b->getVictim());
+
+                    if (victim)
+                        updateScore(victim->getPoints());
+                });
+
                 getGameObjects().add("bullets", std::move(bullet));
+            }
         }
     });
 }
@@ -158,6 +168,18 @@ void GameplayScene::createPlayerShip() {
 ///////////////////////////////////////////////////////////////
 void GameplayScene::createGalaxians() {
     m_galaxianFormation = std::make_unique<GalaxianFormation>(*this);
+}
+
+///////////////////////////////////////////////////////////////
+void GameplayScene::updateScore(int points) {
+    auto newScore = getCache().getValue<int>("CURRENT_SCORE") + points;
+    getCache().setValue("CURRENT_SCORE", newScore);
+    getGui().getWidget<ime::ui::Label>("lblScoreVal")->setText(std::to_string(newScore));
+
+    if (newScore > getCache().getValue<int>("HIGH_SCORE")) {
+        getCache().setValue("HIGH_SCORE", newScore);
+        getGui().getWidget<ime::ui::Label>("lblHighScoreVal")->setText(std::to_string(newScore));
+    }
 }
 
 ///////////////////////////////////////////////////////////////
