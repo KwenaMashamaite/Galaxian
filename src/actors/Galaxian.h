@@ -97,6 +97,15 @@ public:
     void update(ime::Time deltaTime) final;
 
 protected:
+    /**
+     * @brief Set the galaxians default/formation animation
+     * @param rect The sub rectangle of the animation frames
+     * @throws ime::FileNotFoundException if the sprite sheet image cannot be
+     * found on the disk
+     */
+    void setDefaultAnimation(const ime::UIntRect& rect);
+
+protected:
     bool m_isDiving;        //!< A flag indicating whether or not the galaxian is diving
     bool m_isInFormation;   //!< A flag indicating whether or not the galaxian is in formation
 

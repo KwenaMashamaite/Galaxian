@@ -68,3 +68,15 @@ bool Galaxian::isFlagship() const {
 void Galaxian::update(ime::Time deltaTime) {
     dive(deltaTime.asSeconds());
 }
+
+///////////////////////////////////////////////////////////////
+void Galaxian::setDefaultAnimation(const ime::UIntRect &rect) {
+    auto defAnim = ime::Animation::create("formation", ime::SpriteSheet("objects-spritesheet.png", {16, 8}, {1, 1}, rect));
+    defAnim->addFrames(ime::Index{0, 0}, 4);
+    defAnim->onStart([this] (ime::Animation*) { resetSpriteOrigin(); });
+    defAnim->setDuration(ime::milliseconds(800));
+    defAnim->setLoop(true);
+    getSprite().getAnimator().addAnimation(std::move(defAnim));
+    getSprite().getAnimator().startAnimation("formation");
+    resetSpriteOrigin();
+}

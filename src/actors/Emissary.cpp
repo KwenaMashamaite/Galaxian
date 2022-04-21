@@ -30,6 +30,7 @@ Emissary::Emissary(ime::Scene &scene) :
     Galaxian(scene, Galaxian::Type::Emissary)
 {
     setTexture("objects-spritesheet.png", ime::UIntRect{3, 98, 11, 8});
+    setDefaultAnimation(ime::UIntRect{16, 127, 69, 10});
     setCollisionFilter(collision::CATEGORY_GALAXIAN, collision::MASK_GALAXIAN);
 }
 

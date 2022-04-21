@@ -44,7 +44,7 @@ GalaxianFormation::GalaxianFormation(ime::Scene &scene) :
         for (int j = 0; j < NUM_DRONES_PER_ROW; j++) {
             auto drone = std::make_unique<Drone>(scene);
             ime::Vector2f spriteSize = drone->getSprite().getGlobalBounds().getSize();
-            drone->getTransform().setPosition(startPos.x + 1.5 * j * spriteSize.x, startPos.y - 1.8 * i * spriteSize.y);
+            drone->getTransform().setPosition(startPos.x + j * spriteSize.x, startPos.y - 1.8 * i * spriteSize.y);
             m_objects.add("drones", std::move(drone));
         }
     }
@@ -56,7 +56,7 @@ GalaxianFormation::GalaxianFormation(ime::Scene &scene) :
     for (int i = 0; i < NUM_EMISSARY_PER_ROW; i++) {
         auto emissary = std::make_unique<Emissary>(scene);
         ime::Vector2f spriteSize = emissary->getSprite().getGlobalBounds().getSize();
-        emissary->getTransform().setPosition(startPos.x + 1.5 * i * spriteSize.x, startPos.y);
+        emissary->getTransform().setPosition(startPos.x + i * spriteSize.x, startPos.y);
         m_objects.add("emissaries", std::move(emissary));
     }
 
@@ -67,7 +67,7 @@ GalaxianFormation::GalaxianFormation(ime::Scene &scene) :
     for (int i = 0; i < NUM_ESCORT_PER_ROW; i++) {
         auto escort = std::make_unique<Escort>(scene);
         ime::Vector2f spriteSize = escort->getSprite().getGlobalBounds().getSize();
-        escort->getTransform().setPosition(startPos.x + 1.5 * i * spriteSize.x, startPos.y);
+        escort->getTransform().setPosition(startPos.x + i * spriteSize.x, startPos.y);
         m_objects.add("escorts", std::move(escort));
     }
 
@@ -78,7 +78,7 @@ GalaxianFormation::GalaxianFormation(ime::Scene &scene) :
     for (int i = 0; i < NUM_FLAGSHIP_PER_ROW; i++) {
         auto flagship = std::make_unique<Flagship>(scene);
         ime::Vector2f spriteSize = flagship->getSprite().getGlobalBounds().getSize();
-        flagship->getTransform().setPosition(startPos.x + 4.5f * i * spriteSize.x, startPos.y);
+        flagship->getTransform().setPosition(startPos.x + 4.4f * i * spriteSize.x, startPos.y);
         m_objects.add("flagships", std::move(flagship));
     }
 }

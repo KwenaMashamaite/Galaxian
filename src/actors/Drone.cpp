@@ -30,6 +30,7 @@ Drone::Drone(ime::Scene &scene) :
     Galaxian(scene, Galaxian::Type::Drone)
 {
     setTexture("objects-spritesheet.png", ime::UIntRect{3, 158, 11, 8});
+    setDefaultAnimation(ime::UIntRect{16, 187, 69, 10});
     setCollisionFilter(collision::CATEGORY_GALAXIAN, collision::MASK_GALAXIAN);
 }
 
