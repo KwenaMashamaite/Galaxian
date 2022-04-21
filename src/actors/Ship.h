@@ -82,6 +82,12 @@ public:
     double getHeath() const;
 
     /**
+     * @brief Check if the ship is blowing up or not
+     * @return True if blowing up, false otherwise
+     */
+    bool isBlowingUp() const;
+
+    /**
      * @brief Handle a collision with a bullet
      * @param bullet The bullet that hit the ship
      *

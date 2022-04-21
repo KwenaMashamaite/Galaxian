@@ -63,6 +63,13 @@ double Ship::getHeath() const {
 }
 
 ///////////////////////////////////////////////////////////////
+bool Ship::isBlowingUp() const {
+    ime::Animation::Ptr curAnim = getSprite().getAnimator().getActiveAnimation();
+
+    return curAnim && curAnim->getName() == "explosion";
+}
+
+///////////////////////////////////////////////////////////////
 void Ship::onHitByBullet(Bullet &bullet) {
     if (isActive())
         setHealth(m_health - bullet.getStrength());

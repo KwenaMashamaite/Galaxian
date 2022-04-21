@@ -39,8 +39,20 @@ public:
      */
     explicit GalaxianFormation(ime::Scene& scene);
 
+    /**
+     * @brief Start moving the formation left and right
+     *
+     * The formation will move left until it collides with the window borders
+     * at which point it moves right. Similarly, it will move right until it
+     * collides with the window borders at which points its starts moving left
+     *
+     * By default, the formation moves in the left direction
+     */
+    void move();
+
 private:
     ime::GameObjectContainer& m_objects;
+    ime::Vector2i m_direction;
 };
 
 #endif //GALAXIAN_GALAXIANFORMATION_H

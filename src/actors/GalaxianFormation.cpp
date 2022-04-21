@@ -32,7 +32,8 @@
 
 ///////////////////////////////////////////////////////////////
 GalaxianFormation::GalaxianFormation(ime::Scene &scene) :
-    m_objects(scene.getGameObjects())
+    m_objects(scene.getGameObjects()),
+    m_direction(1, 0)
 {
     ime::Vector2u winSize = scene.getWindow().getSize();
 
@@ -81,4 +82,24 @@ GalaxianFormation::GalaxianFormation(ime::Scene &scene) :
         flagship->getTransform().setPosition(startPos.x + 4.4f * i * spriteSize.x, startPos.y);
         m_objects.add("flagships", std::move(flagship));
     }
+
+    // Change directions when galaxian collides with the vertical window borders
+    m_objects.forEachInGroups({"drones", "emissaries", "escorts", "flagships"}, [this](ime::GameObject* gameObject) {
+        gameObject->onRigidBodyCollisionStart([this](ime::GameObject*, ime::GameObject* other) {
+            if (other->getTag() == "window-border") {
+                m_direction *= -1;
+                move();
+            }
+        });
+    });
+}
+
+///////////////////////////////////////////////////////////////
+void GalaxianFormation::move() {
+    m_objects.forEachInGroups({"drones", "emissaries", "escorts", "flagships"}, [this](ime::GameObject* gameObject) {
+        auto* galaxian = static_cast<Galaxian*>(gameObject);
+
+        if (!galaxian->isBlowingUp() && !galaxian->isDiving())
+            galaxian->getRigidBody()->setLinearVelocity(ime::Vector2f{60.0f * (float) m_direction.x, 0.0f});
+    });
 }

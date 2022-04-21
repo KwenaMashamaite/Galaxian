@@ -104,6 +104,7 @@ void GameplayScene::addWindowBorders() {
 
     // Left window border
     ime::GameObject::Ptr leftBorder = ime::GameObject::create(*this);
+    leftBorder->setTag("window-border");
     leftBorder->attachRigidBody(std::move(rigidBody));
     leftBorder->getTransform().setPosition({0.5f, getWindow().getSize().y / 2.0f});
 
@@ -170,6 +171,7 @@ void GameplayScene::createPlayerShip() {
 ///////////////////////////////////////////////////////////////
 void GameplayScene::createGalaxians() {
     m_galaxianFormation = std::make_unique<GalaxianFormation>(*this);
+    m_galaxianFormation->move();
 }
 
 ///////////////////////////////////////////////////////////////

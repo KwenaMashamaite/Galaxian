@@ -31,10 +31,6 @@ Galaxian::Galaxian(ime::Scene &scene, Type type) :
     m_isInFormation(false),
     m_type(type)
 {
-    onPropertyChange("texture", [this](const ime::Property&) {
-        getRigidBody()->setType(ime::RigidBody::Type::Kinematic);
-    });
-
     // Explosion animation
     auto explosionAnim = ime::Animation::create("explosion", ime::SpriteSheet("objects-spritesheet.png", {16, 16}, {1, 1}, {50, 213, 69, 18}));
     explosionAnim->addFrames(ime::Index{0, 0}, 4);

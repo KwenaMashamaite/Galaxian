@@ -38,10 +38,10 @@ namespace collision {
     const static inline ime::Uint16 CATEGORY_VERT_WIN_BORDER = 0x0008;     // 4
 
     // Collision masks
-    const static inline ime::Uint16 MASK_GALAXIAN = CATEGORY_PLAYER | CATEGORY_BULLET; // A galaxian collides with the player and bullets but not with other galaxians
+    const static inline ime::Uint16 MASK_GALAXIAN = CATEGORY_PLAYER | CATEGORY_BULLET | CATEGORY_VERT_WIN_BORDER; // A galaxian collides with the player and bullets but not with other galaxians
     const static inline ime::Uint16 MASK_PLAYER = CATEGORY_BULLET | CATEGORY_GALAXIAN | CATEGORY_VERT_WIN_BORDER;
     const static inline ime::Uint16 MASK_BULLET = CATEGORY_PLAYER | CATEGORY_GALAXIAN;
-    const static inline ime::Uint16 MASK_VERT_WIN_BORDER = CATEGORY_PLAYER;
+    const static inline ime::Uint16 MASK_VERT_WIN_BORDER = CATEGORY_PLAYER | CATEGORY_GALAXIAN;
 }
 
 #endif
