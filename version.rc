@@ -18,13 +18,13 @@ BEGIN
             VALUE "Comments", "For educational purposes only"
             VALUE "CompanyName", "Personal Project"
             VALUE "FileDescription", "Galaxian"
-            VALUE "FileVersion", "0, 3, 0, 0"
+            VALUE "FileVersion", "0, 4, 0, 0"
             VALUE "InternalName", "Galaxian Clone"
             VALUE "LegalCopyright", "Copyright (c) 2022, Kwena Mashamaite"
             VALUE "LegalTrademarks1", "Trademark (R) 2022, Bandai Namco"
             VALUE "OriginalFilename", "Galaxian.exe"
             VALUE "ProductName", "Galaxian Clone"
-            VALUE "ProductVersion", "0, 3, 0, 0"
+            VALUE "ProductVersion", "0, 4, 0, 0"
         END
     END
     BLOCK "VarFileInfo"

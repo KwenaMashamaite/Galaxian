@@ -5,14 +5,14 @@ The game and the engine are both written in C++17.
 
 ## How to play
 
-1. [Download](https://github.com/KwenaMashamaite/Galaxian/releases/tag/v0.3.0) game
+1. [Download](https://github.com/KwenaMashamaite/Galaxian/releases/tag/v0.4.0) game
 2. Extract the zip archive
 3. Run _Galaxian.exe_
 4. Enjoy :video_game:
 
 ## Build
 
-###### *Read this section if you want to build the game yourself, otherwise you can just [download](https://github.com/KwenaMashamaite/Galaxian/releases/tag/v0.3.0) it.*
+###### *Read this section if you want to build the game yourself, otherwise you can just [download](https://github.com/KwenaMashamaite/Galaxian/releases/tag/v0.4.0) it.*
 
 This project is a CMake project, therefore you must download and install [CMake](https://cmake.org/) 3.21 or above. 
 You also need to download [Infinite Motion Engine v3.1.0](https://github.com/KwenaMashamaite/IME/releases/tag/v3.1.0). 

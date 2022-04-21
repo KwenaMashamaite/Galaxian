@@ -32,7 +32,7 @@ namespace config {
     /**
      * @brief The current version of the game
      */
-    static inline const std::string VERSION = "0.3.0";
+    static inline const std::string VERSION = "0.4.0";
 
     /**
      * @brief The version of IME used to build the game
