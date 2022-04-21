@@ -34,6 +34,7 @@ Flagship::Flagship(ime::Scene &scene) :
     m_hadEscorts(false)
 {
     setTexture("objects-spritesheet.png", ime::UIntRect{3, 3, 11, 11});
+    getSprite().scale(1.3f, 1.3f);
     setCollisionFilter(collision::CATEGORY_GALAXIAN, collision::MASK_GALAXIAN);
 }
 

@@ -38,23 +38,21 @@ GalaxianFormation::GalaxianFormation(ime::Scene &scene) :
     ime::Vector2u winSize = scene.getWindow().getSize();
 
     // Create Drone ships
-    const int NUM_DRONES_PER_ROW = 10;
-    ime::Vector2f startPos = {(winSize.x / 2.0f) - 148.5f, winSize.y / 2.0f};
+    ime::Vector2f startPos = {(winSize.x / 2.0f) - 184.5f, (winSize.y / 2.0f) - 76};
 
     for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < NUM_DRONES_PER_ROW; j++) {
+        for (int j = 0; j < 10; j++) {
             auto drone = std::make_unique<Drone>(scene);
             ime::Vector2f spriteSize = drone->getSprite().getGlobalBounds().getSize();
-            drone->getTransform().setPosition(startPos.x + j * spriteSize.x, startPos.y - 1.8 * i * spriteSize.y);
+            drone->getTransform().setPosition(startPos.x + j * spriteSize.x, startPos.y - 1.4 * i * spriteSize.y);
             m_objects.add("drones", std::move(drone));
         }
     }
 
     // Create Emissary ships
-    const int NUM_EMISSARY_PER_ROW = 8;
-    startPos = {(winSize.x / 2.0f) - 116.0f, (winSize.y / 2.0f) - 81.6f};
+    startPos = ime::Vector2f{(winSize.x / 2.0f) - 141.2f, startPos.y - 88.6f};
 
-    for (int i = 0; i < NUM_EMISSARY_PER_ROW; i++) {
+    for (int i = 0; i < 8; i++) {
         auto emissary = std::make_unique<Emissary>(scene);
         ime::Vector2f spriteSize = emissary->getSprite().getGlobalBounds().getSize();
         emissary->getTransform().setPosition(startPos.x + i * spriteSize.x, startPos.y);
@@ -62,10 +60,9 @@ GalaxianFormation::GalaxianFormation(ime::Scene &scene) :
     }
 
     // Create Escort ships
-    const int NUM_ESCORT_PER_ROW = 6;
-    startPos = {(winSize.x / 2.0f) - 82.0f, (winSize.y / 2.0f) - 105.6f};
+    startPos = {(winSize.x / 2.0f) - 99.0f, startPos.y - 27.6f};
 
-    for (int i = 0; i < NUM_ESCORT_PER_ROW; i++) {
+    for (int i = 0; i < 6; i++) {
         auto escort = std::make_unique<Escort>(scene);
         ime::Vector2f spriteSize = escort->getSprite().getGlobalBounds().getSize();
         escort->getTransform().setPosition(startPos.x + i * spriteSize.x, startPos.y);
@@ -73,10 +70,9 @@ GalaxianFormation::GalaxianFormation(ime::Scene &scene) :
     }
 
     // Create Flagship ships
-    const int NUM_FLAGSHIP_PER_ROW = 2;
-    startPos = {(winSize.x / 2.0f) - 50.0f, (winSize.y / 2.0f) - 130.6f};
+    startPos = {(winSize.x / 2.0f) - 56.5f, startPos.y - 29.6f};
 
-    for (int i = 0; i < NUM_FLAGSHIP_PER_ROW; i++) {
+    for (int i = 0; i < 2; i++) {
         auto flagship = std::make_unique<Flagship>(scene);
         ime::Vector2f spriteSize = flagship->getSprite().getGlobalBounds().getSize();
         flagship->getTransform().setPosition(startPos.x + 4.4f * i * spriteSize.x, startPos.y);

@@ -35,6 +35,7 @@ Escort::Escort(ime::Scene &scene) :
 {
     setTexture("objects-spritesheet.png", ime::UIntRect{3, 38, 11, 8});
     setDefaultAnimation(ime::UIntRect{16, 67, 69, 10});
+    getSprite().scale(1.3f, 1.3f);
     setCollisionFilter(collision::CATEGORY_GALAXIAN, collision::MASK_GALAXIAN);
 }
 
