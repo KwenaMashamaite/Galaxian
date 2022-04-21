@@ -46,6 +46,10 @@ void Ship::setHealth(double health) {
 
         if (m_health <= 0) {
             health = 0.0;
+
+            if (ime::RigidBody* rigidBody = getRigidBody(); rigidBody)
+                rigidBody->setLinearVelocity(ime::Vector2f(0.0f, 0.0f));
+
             getSprite().getAnimator().startAnimation("explosion");
         }
 
