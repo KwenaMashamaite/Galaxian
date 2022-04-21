@@ -26,7 +26,8 @@ set(SRC_FILES
         scoreboard/Scoreboard.cpp
         util/Utils.cpp
         gui/widgets/ClosablePanel.cpp
-        scene/ScrollingBackgroundScene.cpp)
+        scene/ScrollingBackgroundScene.cpp
+        actors/GalaxianFormation.cpp)
 
 # Resource script files
 set(RES_FILES

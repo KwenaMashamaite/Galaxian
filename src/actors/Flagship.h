@@ -132,6 +132,12 @@ public:
      */
     std::string getClassName() const override;
 
+    /**
+     * @brief Dive towards the player
+     * @param deltaTime Time passed since last dive update
+     */
+    void dive(float deltaTime) override;
+
 private:
     std::vector<Escort*> m_escorts; //!< Escorts
     bool m_hadEscorts;              //!< A flag indicating whether or not the flagship left the formation with an escort

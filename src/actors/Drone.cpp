@@ -45,3 +45,8 @@ int Drone::getPoints() const {
 std::string Drone::getClassName() const {
     return "Drone";
 }
+
+///////////////////////////////////////////////////////////////
+void Drone::dive(float deltaTime) {
+
+}

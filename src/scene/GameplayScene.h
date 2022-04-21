@@ -26,6 +26,8 @@
 #define GALAXIAN_GAMEPLAYSCENE_H
 
 #include "Scene.h"
+#include "actors/GalaxianFormation.h"
+#include <memory>
 
 /**
  * @brief Gameplay scene
@@ -79,6 +81,14 @@ private:
      * @brief Create the player ship
      */
     void createPlayerShip();
+
+    /**
+     * @brief Create the galaxian ships
+     */
+    void createGalaxians();
+
+private:
+    std::unique_ptr<GalaxianFormation> m_galaxianFormation;
 };
 
 #endif //GALAXIAN_GAMEPLAYSCENE_H

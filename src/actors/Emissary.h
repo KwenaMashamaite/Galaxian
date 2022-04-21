@@ -49,6 +49,12 @@ public:
      * @return The name of the class as declared
      */
     std::string getClassName() const override;
+
+    /**
+     * @brief Dive towards the player
+     * @param deltaTime Time passed since last dive update
+     */
+    void dive(float deltaTime) override;
 };
 
 

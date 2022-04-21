@@ -74,3 +74,8 @@ int Escort::getPoints() const {
 std::string Escort::getClassName() const {
     return "Escort";
 }
+
+///////////////////////////////////////////////////////////////
+void Escort::dive(float deltaTime) {
+
+}

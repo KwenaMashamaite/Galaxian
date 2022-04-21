@@ -123,3 +123,8 @@ int Flagship::getPoints() const {
 std::string Flagship::getClassName() const {
     return "Flagship";
 }
+
+///////////////////////////////////////////////////////////////
+void Flagship::dive(float deltaTime) {
+
+}

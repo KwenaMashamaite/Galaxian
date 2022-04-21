@@ -22,31 +22,25 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "Emissary.h"
-#include "CollisionFiltering.h"
+#ifndef GALAXIAN_GALAXIANFORMATION_H
+#define GALAXIAN_GALAXIANFORMATION_H
 
-///////////////////////////////////////////////////////////////
-Emissary::Emissary(ime::Scene &scene) :
-    Galaxian(scene, Galaxian::Type::Emissary)
-{
-    setTexture("objects-spritesheet.png", ime::UIntRect{3, 98, 11, 8});
-    setCollisionFilter(collision::CATEGORY_GALAXIAN, collision::MASK_GALAXIAN);
-}
+#include <IME/core/scene/GameObjectContainer.h>
+#include <IME/core/scene/Scene.h>
 
-///////////////////////////////////////////////////////////////
-int Emissary::getPoints() const {
-    if (m_isInFormation)
-        return 40;
-    else
-        return 80;
-}
+/**
+ * @brief A formation of enemy ships
+ */
+class GalaxianFormation {
+public:
+    /**
+     * @brief Constructor
+     * @param scene The scene the enemy ships belongs to
+     */
+    explicit GalaxianFormation(ime::Scene& scene);
 
-///////////////////////////////////////////////////////////////
-std::string Emissary::getClassName() const {
-    return "Emissary";
-}
+private:
+    ime::GameObjectContainer& m_objects;
+};
 
-///////////////////////////////////////////////////////////////
-void Emissary::dive(float deltaTime) {
-
-}
+#endif //GALAXIAN_GALAXIANFORMATION_H

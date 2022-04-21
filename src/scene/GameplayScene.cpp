@@ -48,6 +48,7 @@ void GameplayScene::onEnter() {
     initPhysicsEngine();
     addWindowBorders();
     createPlayerShip();
+    createGalaxians();
 
     // Instantiate pause menu once
     if (!getEngine().isSceneCached("PauseMenuScene"))
@@ -154,6 +155,12 @@ void GameplayScene::createPlayerShip() {
     });
 }
 
+///////////////////////////////////////////////////////////////
+void GameplayScene::createGalaxians() {
+    m_galaxianFormation = std::make_unique<GalaxianFormation>(*this);
+}
+
+///////////////////////////////////////////////////////////////
 void GameplayScene::onFrameEnd() {
     getGameObjects().removeIf([](const ime::GameObject* gameObject) {
         return !gameObject->isActive();

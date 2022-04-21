@@ -61,6 +61,12 @@ public:
      */
     std::string getClassName() const override;
 
+    /**
+     * @brief Dive towards the player
+     * @param deltaTime Time passed since last dive update
+     */
+    void dive(float deltaTime) override;
+
 private:
     Flagship* m_flagship;
 };
