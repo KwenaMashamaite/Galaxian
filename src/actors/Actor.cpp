@@ -65,6 +65,8 @@ void Actor::setTexture(const std::string &texture, const ime::UIntRect &rect) {
     resetSpriteOrigin();
     getTransform().scale(2.0f, 2.0f);
     attachCollider();
+
+    emitChange(ime::Property("texture"));
 }
 
 ///////////////////////////////////////////////////////////////
