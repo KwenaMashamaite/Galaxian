@@ -31,7 +31,12 @@ Galaxian::Galaxian(ime::Scene &scene, Type type) :
     m_isInFormation(false),
     m_type(type)
 {
-
+    auto explosionAnim = ime::Animation::create("explosion", ime::SpriteSheet("objects-spritesheet.png", {16, 16}, {1, 1}, {50, 213, 69, 18}));
+    explosionAnim->addFrames(ime::Index{0, 0}, 4);
+    explosionAnim->setDuration(ime::milliseconds(300));
+    explosionAnim->onStart([this](ime::Animation*) { resetSpriteOrigin(); });
+    explosionAnim->onComplete([this] (ime::Animation*) { setActive(false); });
+    getSprite().getAnimator().addAnimation(std::move(explosionAnim));
 }
 
 ///////////////////////////////////////////////////////////////

@@ -41,12 +41,12 @@ Ship::Origin Ship::getOrigin() const {
 
 ///////////////////////////////////////////////////////////////
 void Ship::setHealth(double health) {
-    if (m_health != health) {
+    if (m_health != 0.0 && m_health != health) {
         m_health = health;
 
         if (m_health <= 0) {
             health = 0.0;
-            setActive(false);
+            getSprite().getAnimator().startAnimation("explosion");
         }
 
         emitChange(ime::Property{"health", m_health});

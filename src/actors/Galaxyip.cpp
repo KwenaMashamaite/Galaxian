@@ -32,6 +32,14 @@ Galaxyip::Galaxyip(ime::Scene &scene) :
     setHealth(4 * Ship::DEFAULT_HEALTH);
     setTexture("objects-spritesheet.png", ime::UIntRect{2, 227, 13, 20});
     setCollisionFilter(collision::CATEGORY_PLAYER, collision::MASK_PLAYER);
+
+    // Explosion
+    auto explosionAnim = ime::Animation::create("explosion", ime::SpriteSheet("objects-spritesheet.png", {32, 32}, {1, 1}, {0, 247, 133, 34}));
+    explosionAnim->addFrames(ime::Index{0, 0}, 4);
+    explosionAnim->setDuration(ime::milliseconds(400));
+    explosionAnim->onStart([this](ime::Animation*) { resetSpriteOrigin(); });
+    explosionAnim->onComplete([this] (ime::Animation*) { setActive(false); });
+    getSprite().getAnimator().addAnimation(std::move(explosionAnim));
 }
 
 ///////////////////////////////////////////////////////////////

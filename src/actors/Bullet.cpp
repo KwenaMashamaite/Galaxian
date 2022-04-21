@@ -38,6 +38,13 @@ Bullet::Bullet(ime::Scene &scene, double strength) :
 {
     setTexture("objects-spritesheet.png", ime::UIntRect{89, 192, 1, 4});
     setCollisionFilter(collision::CATEGORY_BULLET, collision::MASK_BULLET);
+
+    onRigidBodyCollisionStart([this](ime::GameObject* bullet, ime::GameObject* other) {
+        Ship* ship = dynamic_cast<Ship*>(other);
+
+        if (ship)
+            setVictim(ship);
+    });
 }
 
 ///////////////////////////////////////////////////////////////
