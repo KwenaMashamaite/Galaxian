@@ -64,6 +64,22 @@ namespace gui {
         lblHighScoreValue->setPosition("50%", ime::bindBottom(lblHighScore));
         pnlContainer->addWidget(std::move(lblHighScoreValue));
 
+        // Level number depiction
+        auto hlLevelContainer = ime::ui::HorizontalLayout::create("7%", "4%");
+        hlLevelContainer->getRenderer()->setSpaceBetweenWidgets(4);
+        hlLevelContainer->setOrigin(1.0f, 1.0f);
+        hlLevelContainer->setPosition("98%", "99%");
+        hlLevelContainer->addWidget(ime::ui::Picture::create("objects-spritesheet.png", ime::UIntRect{136, 234, 8, 13}));
+
+        // Level value label
+        auto lblLevelVal = ime::ui::Label::create("1");
+        lblLevelVal->setName("lblLevelVal");
+        lblLevelVal->getRenderer()->setTextColour(ime::Colour::White);
+        lblLevelVal->setVerticalAlignment(ime::ui::Label::VerticalAlignment::Center);
+        hlLevelContainer->addWidget(std::move(lblLevelVal));
+        hlLevelContainer->setRatio(std::size_t(0), 0.30f);
+
+        pnlContainer->addWidget(std::move(hlLevelContainer));
         guiContainer.addWidget(std::move(pnlContainer));
     }
 
