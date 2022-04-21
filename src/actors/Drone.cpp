@@ -23,12 +23,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "Drone.h"
+#include "CollisionFiltering.h"
 
 ///////////////////////////////////////////////////////////////
 Drone::Drone(ime::Scene &scene) :
     Galaxian(scene, Galaxian::Type::Drone)
 {
-
+    setTexture("objects-spritesheet.png", ime::UIntRect{3, 158, 11, 8});
+    setCollisionFilter(collision::CATEGORY_GALAXIAN, collision::MASK_GALAXIAN);
 }
 
 ///////////////////////////////////////////////////////////////

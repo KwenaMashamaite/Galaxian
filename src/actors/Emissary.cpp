@@ -23,12 +23,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "Emissary.h"
+#include "CollisionFiltering.h"
 
 ///////////////////////////////////////////////////////////////
 Emissary::Emissary(ime::Scene &scene) :
     Galaxian(scene, Galaxian::Type::Emissary)
 {
-
+    setTexture("objects-spritesheet.png", ime::UIntRect{3, 98, 11, 8});
+    setCollisionFilter(collision::CATEGORY_GALAXIAN, collision::MASK_GALAXIAN);
 }
 
 ///////////////////////////////////////////////////////////////

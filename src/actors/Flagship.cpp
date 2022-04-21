@@ -24,7 +24,7 @@
 
 #include "Flagship.h"
 #include "Escort.h"
-
+#include "CollisionFiltering.h"
 #include <cassert>
 #include <iostream>
 
@@ -33,7 +33,8 @@ Flagship::Flagship(ime::Scene &scene) :
     Galaxian(scene, Galaxian::Type::Flagship),
     m_hadEscorts(false)
 {
-
+    setTexture("objects-spritesheet.png", ime::UIntRect{3, 3, 11, 11});
+    setCollisionFilter(collision::CATEGORY_GALAXIAN, collision::MASK_GALAXIAN);
 }
 
 ///////////////////////////////////////////////////////////////
